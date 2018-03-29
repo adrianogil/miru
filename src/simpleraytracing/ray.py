@@ -5,3 +5,6 @@ class Ray:
 
         self.origin = p1
         self.direction = p2.minus(p1).normalized()
+
+    def __str__(self):
+        return "( " + str(self.origin) + " , " + str(self.direction) + " )"
