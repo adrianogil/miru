@@ -3,6 +3,7 @@ from camera import Camera
 
 from sphere import Sphere
 from plane import Plane
+from cube import Cube
 
 from vector import Vector3
 
@@ -18,13 +19,19 @@ total_sphere = random.randint(1,10)
 
 scene_test = Scene()
 
-v1 = Vector3(-1,-1, 4)
-v2 = Vector3(-1, 2, 4)
-v3 = Vector3( 2, 1, 4)
-v4 = Vector3( 1,-1, 4)
+cube = Cube(Vector3(1,0,0), Vector3(0,2,0),Vector3(0,0,1))
+cube.transform.position = Vector3(0,0,4)
+scene_test.add_objects(cube)
 
-plane1 = Plane([v1,v2,v3,v4])
-scene_test.add_objects(plane1)
+# v1 = Vector3(-1,-1, 4)
+# v2 = Vector3(-1, 1, 4)
+# v3 = Vector3( 1, 1, 4)
+# v4 = Vector3( 1,-1, 4)
+# v5 = Vector3(-2, 0, 4)
+# v6 = Vector3( 2, 0, 4)
+
+# plane1 = Plane([v1,v2,v3,v4])
+# scene_test.add_objects(plane1)
 
 # for i in range(0, total_sphere):
 #     s = Sphere(random.randint(10,200) / 100.0)
