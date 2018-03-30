@@ -15,6 +15,9 @@ class Vector3:
     def clone(self):
         return Vector3(self.x, self.y, self.z)
 
+    def equals(self, v):
+        return self.x == v.x and self.y == v.y and self.z == v.z
+
     def multiply(self, p, cloneit=True):
         if cloneit:
             new_v = self.clone()
@@ -62,8 +65,27 @@ class Vector3:
         dot_value = self.x*v.x + self.y*v.y + self.z*v.z
         return dot_value
 
+    # def scalar_cross_product(self, v1, v2, cloneit=True)
+    #     return (self.x - v1.x)*(v2.y - v1.y)*(v2.z - v1.z) - (self.y - v1.y)*(v2.x - v1.x)*(v2.z - v1.z) - \
+    #         (self.z - v1.z)*(v2.x - v1.x)*(v2.z - v1.z)
+
+    def cross_product(self, v, cloneit=True):
+        if cloneit:
+            new_v = self.clone()
+            new_v.cross_product(v,False)
+            return new_v
+        else:
+            new_x = self.y*v.z - self.z*v.y
+            new_y = self.z*v.x - self.x*v.z
+            new_z = self.x*v.y - self.y*v.x
+
+            self.x = new_x
+            self.y = new_y
+            self.z = new_z
+            return self
+
     @staticmethod
-    def zero(self):
+    def zero():
         return Vector3(0,0,0)
 
 
