@@ -1,5 +1,7 @@
 from transform import Transform
 
+from vector import Vector3
+
 import numpy as np
 
 class Sphere:
@@ -23,7 +25,7 @@ class Sphere:
 
         d2 = L.dot_product(L) - tca * tca
         if d2 > radius2:
-            return False;
+            return (False, Vector3.zero);
         thc = np.sqrt(radius2 - d2)
         t0 = tca - thc
         t1 = tca + thc
@@ -36,7 +38,7 @@ class Sphere:
         if t0 < 0:
             t0 = t1 # if t0 is negative, let's use t1 instead
             if t0 < 0:
-                return False; # both t0 and t1 are negative
+                return (False, Vector3.zero); # both t0 and t1 are negative
         t = t0;
 
-        return True;
+        return (True, ray.origin.add(ray.direction.multiply(t)));

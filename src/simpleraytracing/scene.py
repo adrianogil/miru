@@ -40,11 +40,15 @@ class Scene:
 
                 pixel_color = self.background_color
 
+                min_depth_distance = self.camera.far
+
                 for o in self.objects:
-                    if o.intercepts(ray):
-                        # print('intercepts')
-                        pixel_color = o.albedo
-                        break
+                    result_intersection = o.intercepts(ray)
+                    if result_intersection[0]:
+                        depth_distance = result_intersection[1].minus(self.camera.transform.position).magnitude()
+                        if depth_distance < min_depth_distance:
+                            pixel_color = o.albedo
+                            min_depth_distance = depth_distance
 
                 pixels[x,y] = pixel_color
 

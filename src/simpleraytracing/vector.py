@@ -62,6 +62,11 @@ class Vector3:
         dot_value = self.x*v.x + self.y*v.y + self.z*v.z
         return dot_value
 
+    @staticmethod
+    def zero(self):
+        return Vector3(0,0,0)
+
+
 
 def createVector(x,y,z):
     return Vector3(x,y,z)
