@@ -21,7 +21,7 @@ class Plane:
         points = []
 
         for p in self.boundary_points:
-            points.append(p.add(self.transform.position))
+            points.append(self.transform.apply_transform(p))
 
         self.n = points[1].minus(points[0]).normalized().cross_product(points[2].minus(points[0]).normalized()).normalized()
         self.p0 = points[0]

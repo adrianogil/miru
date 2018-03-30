@@ -9,6 +9,9 @@ class Vector3:
     def value(self):
         return [[self.x],[self.y],[self.z]]
 
+    def homo_value(self):
+        return [[self.x],[self.y],[self.z],[1]]
+
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + ")"
 
@@ -86,7 +89,11 @@ class Vector3:
 
     @staticmethod
     def zero():
-        return Vector3(0,0,0)
+        return Vector3(0.0,0.0,0.0)
+
+    @staticmethod
+    def one():
+        return Vector3(1.0,1.0,1.0)
 
 
 

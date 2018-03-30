@@ -30,7 +30,7 @@ class Cube:
 
     def intercepts(self, ray):
         for p in self.planes:
-            p.transform.position = self.transform.position
+            p.transform = self.transform
 
         for p in self.planes:
             intersection_result = p.intercepts(ray)

@@ -21,6 +21,7 @@ scene_test = Scene()
 
 cube = Cube(Vector3(1,0,0), Vector3(0,2,0),Vector3(0,0,1))
 cube.transform.position = Vector3(0,0,4)
+cube.transform.rotation = Vector3(0,0,60)
 scene_test.add_objects(cube)
 
 # v1 = Vector3(-1,-1, 4)
@@ -54,5 +55,5 @@ if os.path.exists("/sdcard/Raytracing/"):
 else:
     render_image = 'test.jpg'
 
-scene_test.render(500, 500, render_image)
+scene_test.render(200, 200, render_image)
 print('Scene rasterized in image path: %s' % (render_image,))
