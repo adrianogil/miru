@@ -19,9 +19,9 @@ total_sphere = random.randint(1,10)
 
 scene_test = Scene()
 
-cube = Cube(Vector3(1,0,0), Vector3(0,2,0),Vector3(0,0,1))
-cube.transform.position = Vector3(0,0,4)
-cube.transform.rotation = Vector3(0,0,60)
+cube = Cube(Vector3(1,0,0), Vector3(0,1.5,0),Vector3(0,0,1))
+cube.transform.position = Vector3(0,0,3.8)
+cube.transform.rotation = Vector3(0,30.0,10.0)
 scene_test.add_objects(cube)
 
 # v1 = Vector3(-1,-1, 4)

@@ -6,6 +6,8 @@ from vector import Vector3
 
 import numpy as np
 
+import random
+
 class Cube:
     def __init__(self, v1, v2, v3):
         
@@ -28,12 +30,24 @@ class Cube:
             Plane([ref_pos2, ref_pos2.add(v3p), ref_pos2.add(v3p.add(v2p)), ref_pos2.add(v2p)]),
         ]
 
+        for p in self.planes:
+            p.albedo = (random.randint(20,255), random.randint(20,255), random.randint(20,255))    
+
     def intercepts(self, ray):
         for p in self.planes:
             p.transform = self.transform
 
+        min_depth_distance = 1000
+
+        result = (False, 0)
+
         for p in self.planes:
             intersection_result = p.intercepts(ray)
             if intersection_result[0]:
-                return intersection_result
-        return (False, 0)
+                depth_distance = ray.origin.minus(intersection_result[1]).magnitude()
+                if depth_distance < min_depth_distance:
+                    min_depth_distance = depth_distance
+                    self.albedo = p.albedo
+                    result = intersection_result
+
+        return result
