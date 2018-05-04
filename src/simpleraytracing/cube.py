@@ -33,10 +33,12 @@ class Cube:
         for p in self.planes:
             p.albedo = (random.randint(20,255), random.randint(20,255), random.randint(20,255))    
 
-    def intercepts(self, ray):
+    def pre_render(self):
         for p in self.planes:
             p.transform = self.transform
+            p.pre_render()            
 
+    def intercepts(self, ray):
         min_depth_distance = 1000
 
         result = (False, 0)

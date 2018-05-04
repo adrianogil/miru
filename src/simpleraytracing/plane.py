@@ -17,7 +17,7 @@ class Plane:
         self.albedo = (0,255,0)
         self.transform = Transform()
 
-    def intercepts(self, ray):
+    def pre_render(self):
         points = []
 
         for p in self.boundary_points:
@@ -25,6 +25,12 @@ class Plane:
 
         self.n = points[1].minus(points[0]).normalized().cross_product(points[2].minus(points[0]).normalized()).normalized()
         self.p0 = points[0]
+
+        self.points = points
+
+    def intercepts(self, ray):
+        
+        points = self.points
 
         # https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
         denom = self.n.dot_product(ray.direction)

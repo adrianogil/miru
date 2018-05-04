@@ -29,6 +29,9 @@ class Scene:
         img = Image.new( 'RGB', (pixel_width, pixel_height), "black") # create a new black image
         pixels = img.load() # create the pixel map
 
+        for o in self.objects:
+            o.pre_render()
+
         for x in range(0, pixel_width):
             for y in range(0, pixel_height):
 

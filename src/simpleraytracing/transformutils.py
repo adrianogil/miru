@@ -12,6 +12,13 @@ def getTranslationMatrix(T):
               [0, 0, 0, 1]]
               )
 
+def getOrientationMatrix(eulerRotation):
+   m = getOrientationMatrixZ(eulerRotation.z)
+   m = m.dot(getOrientationMatrixX(eulerRotation.x))
+   m = m.dot(getOrientationMatrixY(eulerRotation.y))
+
+   return m
+
 def getOrientationMatrixX(theta):
     theta = theta * np.pi / 180
     return np.array(
