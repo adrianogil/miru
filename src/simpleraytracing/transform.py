@@ -17,7 +17,7 @@ class Transform:
 
     def get_transform_matrix(self):
         return t_utils.getTranslationMatrix(self.position).dot(
-                t_utils.getOrientationMatrix(self.rotation)
+                t_utils.getCompleteOrientationMatrix(self.rotation)
             ).dot(t_utils.getScalingMatrix(self.scale))
 
     def apply_transform(self, v):

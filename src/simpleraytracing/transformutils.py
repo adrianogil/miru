@@ -19,6 +19,26 @@ def getOrientationMatrix(eulerRotation):
 
    return m
 
+def getCompleteOrientationMatrix(eulerRotation):
+  x = eulerRotation.x * np.pi / 180
+  y = eulerRotation.y * np.pi / 180
+  z = eulerRotation.z * np.pi / 180
+
+  sinx = np.sin(x)
+  cosx = np.cos(x)
+  siny = np.sin(y)
+  cosy = np.cos(y)
+  sinz = np.sin(z)
+  cosz = np.cos(z)
+
+  return np.array(
+          [[cosx*cosz, -cosy*sinz, siny, 0],
+           [cosx*sinz + sinx*siny*cosz, cosx*cosz - sinx*siny*sinz, -sinx*cosy, 0],
+           [sinx*sinz - cosx*siny*cosz, sinx*cosz+cosx*siny*sinz, cosx*cosy, 0],
+           [0,0,0,1]
+          ]
+    )
+
 def getOrientationMatrixX(theta):
     theta = theta * np.pi / 180
     return np.array(
