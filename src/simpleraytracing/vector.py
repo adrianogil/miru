@@ -95,6 +95,10 @@ class Vector3:
     def one():
         return Vector3(1.0,1.0,1.0)
 
+    @staticmethod
+    def up():
+        return Vector3(0.0,1.0,0.0)
+
 
 
 def createVector(x,y,z):

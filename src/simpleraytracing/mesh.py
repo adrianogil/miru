@@ -5,6 +5,11 @@ class Mesh:
         self.vertices = vertices
         self.triangles = triangles
 
+    def add_triangle(self, t1, t2, t3):
+        self.triangles.append(t1)
+        self.triangles.append(t2)
+        self.triangles.append(t3)
+
     def pre_render(self):
         pass
 

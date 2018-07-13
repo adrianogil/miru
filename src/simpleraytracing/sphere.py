@@ -1,6 +1,7 @@
 from transform import Transform
 
 from vector import Vector3
+from color import Color
 
 import numpy as np
 
@@ -8,9 +9,32 @@ class Sphere:
     def __init__(self, radius):
         self.radius = radius
 
-        self.albedo = (255,0,0)
+        self.albedo = Color(1.0, 0.0, 0.0, 1.0)
 
         self.transform = Transform()
+
+    def pre_render(self):
+        pass
+
+    def render(self, scene, interception):
+        light = scene.get_light()
+
+        if light is None:
+            return self.albedo
+        else:
+            render_color = self.albedo.clone()
+
+            light_direction = light.transform.position.minus(interception['hit_point']).normalized()
+            dotNL = light_direction.dot_product(interception['normal'])
+            # print("Dot light and normal: " + str(dotNL))
+            rgb_value = render_color.rgb().multiply(max(0.0, dotNL))
+            rgb_value = rgb_value.multiply(light.intensity)
+            render_color.set_rgb(rgb_value)
+
+            return render_color
+
+        return self.albedo
+
 
     def intercepts(self, ray):
         # geometric solution
@@ -25,7 +49,7 @@ class Sphere:
 
         d2 = L.dot_product(L) - tca * tca
         if d2 > radius2:
-            return (False, Vector3.zero);
+            return {'result': False, 'hit_point': Vector3.zero, 'normal' : None}
         thc = np.sqrt(radius2 - d2)
         t0 = tca - thc
         t1 = tca + thc
@@ -38,7 +62,10 @@ class Sphere:
         if t0 < 0:
             t0 = t1 # if t0 is negative, let's use t1 instead
             if t0 < 0:
-                return (False, Vector3.zero); # both t0 and t1 are negative
+                return {'result': False, 'hit_point': Vector3.zero, 'normal' : None} # both t0 and t1 are negative
         t = t0;
 
-        return (True, ray.origin.add(ray.direction.multiply(t)));
+        hit_point = ray.origin.add(ray.direction.multiply(t))
+        normal = hit_point.minus(self.transform.position).normalized()
+
+        return {'result': True, 'hit_point': hit_point, 'normal' : normal}
