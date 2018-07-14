@@ -73,11 +73,23 @@ c = Camera()
 c.fov = 90
 
 scene_test.set_camera(c)
-# scene_test.add_post_processing(MeanFilter())
-blur_kernel = np.matrix([[0.0625, 0.125, 0.0625],[0.125, 0.25, 0.125],[0.0625, 0.125, 0.0625]])
+
+blur_kernel = np.matrix([[0.0625, 0.125, 0.0625],
+                         [0.125,  0.25,   0.125],
+                         [0.0625, 0.125, 0.0625]])
+sharpen_kernel = np.matrix([[ 0, -1,  0],
+                            [-1,  5, -1],
+                            [ 0, -1,  0]])
+unsharp_kernel = (-1.0/256)* np.matrix([[ 1,  4,    6,  4, 1],
+                                        [ 4, 16,   24, 16, 4],
+                                        [ 6, 24, -476, 24, 6],
+                                        [ 4, 16,   24, 16, 4],
+                                        [ 1,  4,    6,  4, 1]])
 # kernel = np.matrix([[],[],[]])
 
-scene_test.add_post_processing(KernelFilter(blur_kernel, 3, 3))
+scene_test.add_post_processing(KernelFilter(unsharp_kernel, 5, 5))
+# scene_test.add_post_processing(KernelFilter(sharpen_kernel, 3, 3))
+# scene_test.add_post_processing(KernelFilter(blur_kernel, 3, 3))
 # scene_test.add_post_processing(MeanFilter())
 
 if os.path.exists("/sdcard/Raytracing/"):
@@ -85,5 +97,5 @@ if os.path.exists("/sdcard/Raytracing/"):
 else:
     render_image = 'test.jpg'
 
-scene_test.render(250, 250, render_image)
+scene_test.render(500, 500, render_image)
 print('Scene rasterized in image path: %s' % (render_image,))

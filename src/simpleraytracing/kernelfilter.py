@@ -16,7 +16,7 @@ class KernelFilter:
 
                 for c in range(0, 3):
 
-                    sum_kernel = 0
+                    sum_kernel = 0.0
 
                     for fx in range(0, self.filter_size_x):
                         for fy in range(0, self.filter_size_y):
@@ -26,8 +26,9 @@ class KernelFilter:
                             if ix >= 0 and ix < render_data.pixel_width and \
                                iy >= 0 and iy < render_data.pixel_height:
                                
-                               sum_kernel = sum_kernel + self.kernel[fx,fy]*render_data.pixels[ix,iy][c]
+                               sum_kernel = sum_kernel + self.kernel[fx,fy]*float(render_data.pixels[ix,iy][c])
 
                     colors[c] = int(sum_kernel)
 
+                # print(str(colors))
                 render_data.pixels[x,y] = tuple(colors)
