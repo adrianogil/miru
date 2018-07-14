@@ -17,6 +17,8 @@ import os
 
 from color import Color
 
+from meanfilter import MeanFilter
+
 try:
     range = xrange
 except NameError:
@@ -68,6 +70,7 @@ c = Camera()
 c.fov = 90
 
 scene_test.set_camera(c)
+scene_test.add_post_processing(MeanFilter())
 
 if os.path.exists("/sdcard/Raytracing/"):
     render_image = "/sdcard/Raytracing/test.jpg"

@@ -12,14 +12,25 @@ try:
 except NameError:
     pass
 
+class RenderData:
+    def __init__(self):
+        self.img = None
+        self.pixel_width = 0
+        self.pixel_height = 0
+        self.pixels = []
+
 class Scene:
     def __init__(self):
         self.objects = []
+        self.post_processing_effects = []
         self.background_color = Color(0.0,0.0,0.0,1.0)
         self.light = None
 
     def add_objects(self, obj):
         self.objects.append(obj)
+
+    def add_post_processing(self, effect):
+        self.post_processing_effects.append(effect)
 
     def set_camera(self, camera):
         self.camera = camera
@@ -32,13 +43,17 @@ class Scene:
 
     def render(self, pixel_height, pixel_width, image_file):
 
+        render_data = RenderData()
+        render_data.pixel_height = pixel_height
+        render_data.pixel_width = pixel_width
+
         nearplane_pos = self.camera.transform.position.add(self.camera.transform.forward.multiply(self.camera.near))
         height_size = 2 * self.camera.near * np.tan(self.camera.fov * 0.5 * np.pi / 180)
         width_size = (pixel_width*1.0/pixel_height) * height_size
 
         # PIL accesses images in Cartesian co-ordinates, so it is Image[columns, rows]
-        img = Image.new( 'RGB', (pixel_width, pixel_height), "black") # create a new black image
-        pixels = img.load() # create the pixel map
+        render_data.img = Image.new( 'RGB', (pixel_width, pixel_height), "black") # create a new black image
+        render_data.pixels = render_data.img.load() # create the pixel map
 
         for o in self.objects:
             o.pre_render()
@@ -69,6 +84,9 @@ class Scene:
                             # import pdb; pdb.set_trace() # Start debugger
                             min_depth_distance = depth_distance
 
-                pixels[x,y] = pixel_color.to_tuple(3)
+                render_data.pixels[x,y] = pixel_color.to_tuple(3)
 
-        img.save(image_file)
+        for post_fx in self.post_processing_effects:
+            post_fx.apply_effect(render_data)
+
+        render_data.img.save(image_file)
