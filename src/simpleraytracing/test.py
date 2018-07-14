@@ -18,6 +18,9 @@ import os
 from color import Color
 
 from meanfilter import MeanFilter
+from kernelfilter import KernelFilter
+
+import numpy as np
 
 try:
     range = xrange
@@ -70,7 +73,12 @@ c = Camera()
 c.fov = 90
 
 scene_test.set_camera(c)
-scene_test.add_post_processing(MeanFilter())
+# scene_test.add_post_processing(MeanFilter())
+blur_kernel = np.matrix([[0.0625, 0.125, 0.0625],[0.125, 0.25, 0.125],[0.0625, 0.125, 0.0625]])
+# kernel = np.matrix([[],[],[]])
+
+scene_test.add_post_processing(KernelFilter(blur_kernel, 3, 3))
+# scene_test.add_post_processing(MeanFilter())
 
 if os.path.exists("/sdcard/Raytracing/"):
     render_image = "/sdcard/Raytracing/test.jpg"
