@@ -17,6 +17,9 @@ import os
 
 from color import Color
 
+from material import Material
+from shader_lambertiantint import LambertianTintShader
+
 from meanfilter import MeanFilter
 from kernelfilter import KernelFilter
 
@@ -35,9 +38,13 @@ light = Light(Color(1.0, 1.0, 1.0, 1.0), 1.0)
 light.transform.position = Vector3(0.0, 2.0, -2.0)
 scene_test.set_light(light)
 
+lambertianTintMaterial = Material()
+lambertianTintMaterial.albedo = Color(0.5, 0.5, 1.0, 1.0)
+lambertianTintMaterial.shader = LambertianTintShader()
+
 s1 = Sphere(1.6)
 s1.transform.position = Vector3(0,1,4)
-s1.albedo = Color(0.5,0.5,1.0, 1.0)
+s1.material = lambertianTintMaterial
 scene_test.add_objects(s1)
 
 # mesh = Mesh()
@@ -53,17 +60,17 @@ c.fov = 90
 scene_test.set_ssaa(1)
 scene_test.set_camera(c)
 
-blur_kernel = np.matrix([[0.0625, 0.125, 0.0625],
-                         [0.125,  0.25,   0.125],
-                         [0.0625, 0.125, 0.0625]])
-sharpen_kernel = np.matrix([[ 0, -1,  0],
-                            [-1,  5, -1],
-                            [ 0, -1,  0]])
-unsharp_kernel = (-1.0/256)* np.matrix([[ 1,  4,    6,  4, 1],
-                                        [ 4, 16,   24, 16, 4],
-                                        [ 6, 24, -476, 24, 6],
-                                        [ 4, 16,   24, 16, 4],
-                                        [ 1,  4,    6,  4, 1]])
+# blur_kernel = np.matrix([[0.0625, 0.125, 0.0625],
+#                          [0.125,  0.25,   0.125],
+#                          [0.0625, 0.125, 0.0625]])
+# sharpen_kernel = np.matrix([[ 0, -1,  0],
+#                             [-1,  5, -1],
+#                             [ 0, -1,  0]])
+# unsharp_kernel = (-1.0/256)* np.matrix([[ 1,  4,    6,  4, 1],
+#                                         [ 4, 16,   24, 16, 4],
+#                                         [ 6, 24, -476, 24, 6],
+#                                         [ 4, 16,   24, 16, 4],
+#                                         [ 1,  4,    6,  4, 1]])
 # kernel = np.matrix([[],[],[]])
 
 # scene_test.add_post_processing(KernelFilter(unsharp_kernel, 5, 5))
