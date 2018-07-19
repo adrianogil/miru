@@ -13,10 +13,18 @@ class Sphere:
 
         self.transform = Transform()
 
+        self.material = None
+
     def pre_render(self):
         pass
 
+    def set_material(self, material):
+        self.material = material
+
     def render(self, scene, interception):
+        if self.material != None:
+            return self.material.render(scene, interception)
+
         light = scene.get_light()
 
         if light is None:
