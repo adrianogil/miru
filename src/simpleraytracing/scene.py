@@ -73,7 +73,7 @@ class Scene:
 
                 # World position of target pixel  in near plane
                 pixel_pos =  self.camera.transform.right.multiply(((x - 0.5 * pixel_width)/(pixel_width) * width_size))\
-                    .add(self.camera.transform.up.multiply((y - 0.5*pixel_height)/(pixel_height) * height_size))\
+                    .add(self.camera.transform.up.multiply((-1) * (y - 0.5*pixel_height)/(pixel_height) * height_size))\
                     .add(nearplane_pos)
 
                 ray = Ray(self.camera.transform.position, pixel_pos)

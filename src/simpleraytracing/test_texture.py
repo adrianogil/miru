@@ -42,10 +42,15 @@ lambertianTintMaterial = Material()
 lambertianTintMaterial.albedo = Color(0.5, 0.5, 1.0, 1.0)
 lambertianTintMaterial.shader = LambertianTintShader()
 
-s1 = Sphere(1.6)
-s1.transform.position = Vector3(0,1,4)
+s1 = Sphere(0.6)
+s1.transform.position = Vector3(0, 2.4, 4)
 s1.material = lambertianTintMaterial
 scene_test.add_objects(s1)
+
+s2 = Sphere(1.2)
+s2.transform.position = Vector3(-0.2, -2.4, 4)
+s2.material = lambertianTintMaterial.clone()
+scene_test.add_objects(s2)
 
 # mesh = Mesh()
 # mesh.vertices = [Vector3(0.0, 0.0, 2.0), Vector3(2.0, 0.0, 2.0), Vector3(1.0, 2.0, 3.0)]

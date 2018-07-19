@@ -6,6 +6,14 @@ class Material:
         self.albedo = Color(1.0, 1.0, 1.0, 1.0)
         self.shader = None
 
+    def clone(self):
+        new_material = Material()
+        new_material.albedo = self.albedo
+        new_material.texture = self.texture
+        new_material.shader = self.shader
+
+        return new_material
+
     def set_texture(texture):
         self.texture = texture
 
