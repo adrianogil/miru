@@ -15,10 +15,14 @@ class Texture:
         self.width = image_size[0]
         self.height = image_size[1]
         self.pixels = self.image.load()
+        self.aspect_ratio = self.width * 1.0 / self.height
 
     def tex2D(self, uv):
         px = int(uv.x * (self.width-1)) 
         py = int(uv.y * (self.height-1))
+
+        # Adjust py (UV.y is inverted)
+        py = self.height - py - 1
 
         px = np.mod(px + self.width, self.width)
         py = np.mod(py + self.height, self.height)

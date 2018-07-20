@@ -2,6 +2,8 @@ import sys
 
 from vector import Vector3, Vector2
 
+import numpy as np
+
 class Mesh:
     def __init__(self, vertices=[], triangles=[]):
         self.vertices = vertices
@@ -95,9 +97,23 @@ class Mesh:
             return result
 
         if (e2.dot_product(q) * invDet) > epsilon:
-            n = p2.minus(p1).normalized().cross_product(p3.minus(p1).normalized()).normalized()
+
+            n = e1.normalized().cross_product(e2.normalized()).normalized()
+            denom = n.dot_product(ray.direction)
+
+            # print(str(denom))
+            if np.abs(denom) > 1e-6:
+                if denom < 0:
+                    return result
+                    # n.multiply(-1, False)
+
+            
             p1l0 = p1.minus(ray.origin)
             t = p1l0.dot_product(n)
+
+            if t < 0:
+                return result
+
             hit_point = ray.origin.add(ray.direction.multiply(t))
             bary_coord = self.barycentric(hit_point, p1, p2, p3)
 
@@ -108,11 +124,16 @@ class Mesh:
             else:
                 uv = None
 
+            # print('mesh.intercepts - hit_point - ' + str(hit_point))
+            # print('mesh.intercepts - normal - ' + str(n))
+            # print('mesh.intercepts - uv - ' + str(uv))
+
             # ray does intersect
             result['result'] = True
             result['hit_point'] = hit_point
-            result['normal'] = n
+            result['normal'] = n.multiply(-1)
             result['uv'] = uv
+
             return result
 
         # No hit at all

@@ -1,5 +1,7 @@
 from vector import Vector3
 
+import random
+
 class Color:
     def __init__(self, r, g, b, a):
         self.r = float(r)
@@ -57,3 +59,7 @@ class Color:
             self.a = self.a * color.a
 
             return self
+
+    @staticmethod
+    def random():
+        return Color(float(random.randint(0,255))*1.0/255.0, float(random.randint(0,255))*1.0/255.0, float(random.randint(0,255))*1.0/255.0, 1.0)

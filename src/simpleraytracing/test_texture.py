@@ -35,9 +35,10 @@ except NameError:
 total_sphere = random.randint(1,15)
 
 scene_test = Scene()
+scene_test.background_color = Color.random()
 
 light = Light(Color(1.0, 1.0, 1.0, 1.0), 1.0)
-light.transform.position = Vector3(0.0, 2.0, -2.0)
+light.transform.position = Vector3(1.0, 2.0, 1.0)
 scene_test.set_light(light)
 
 lambertianTintMaterial = Material()
@@ -55,10 +56,17 @@ lambertianTintMaterial.shader = LambertianTintShader()
 # s2.material.set_texture(Texture("images/moon.jpg"))
 # scene_test.add_objects(s2)
 
+zelda_texture = Texture("images/zelda.jpg")
+
+position = Vector3(-2.0, 0.0, 3.0)
+v1 = Vector3(2.0, 0.0, 0.0).multiply(zelda_texture.aspect_ratio)
+v2 = Vector3(0.0, 2.0, 0.0)
+
 mesh = Mesh()
-quadmesh.create(mesh, Vector3(0.0, 2.0, 0.0), Vector3(2.0, 0.0, 0.0), Vector3(0.0, 0.0, 3.0))
+quadmesh.create(mesh, v1, v2, position)
 mesh.material = lambertianTintMaterial.clone()
-mesh.material.texture = Texture("images/zelda.jpg")
+mesh.material.albedo = Color(1.0, 0.5, 0.5, 1.0)
+mesh.material.texture = zelda_texture
 scene_test.add_objects(mesh)
 
 c = Camera()
@@ -96,8 +104,8 @@ else:
 
 render_extension = '.jpg'
 
-render_sizex = 50
-render_sizey = 50
+render_sizex = 250
+render_sizey = 250
 
 scene_test.render(render_sizex, render_sizey, render_image+ '_ssaa1' + render_extension)
 scene_test.set_ssaa(2)
