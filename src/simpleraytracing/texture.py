@@ -2,6 +2,8 @@ from PIL import Image
 
 from color import Color
 
+import numpy as np
+
 class Texture:
     def __init__(self, image_path):
         self.image_path = image_path
@@ -15,8 +17,14 @@ class Texture:
         self.pixels = self.image.load()
 
     def tex2D(self, uv):
-        px = int(uv.x * (self.width-1))
+        px = int(uv.x * (self.width-1)) 
         py = int(uv.y * (self.height-1))
+
+        px = np.mod(px + self.width, self.width)
+        py = np.mod(py + self.height, self.height)
+
+        # print("px: " + str(px))
+        # print("py: " + str(py))
 
         color = self.pixels[px,py]
 

@@ -87,6 +87,7 @@ class Scene:
                     intersection = o.intercepts(ray)
 
                     if intersection['result']:
+
                         depth_distance = intersection['hit_point'].minus(self.camera.transform.position).magnitude()
                         if depth_distance < min_depth_distance:
                             pixel_color = o.render(self, intersection)

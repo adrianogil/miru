@@ -41,26 +41,25 @@ light.transform.position = Vector3(0.0, 2.0, -2.0)
 scene_test.set_light(light)
 
 lambertianTintMaterial = Material()
-lambertianTintMaterial.albedo = Color(0.5, 0.5, 1.0, 1.0)
+lambertianTintMaterial.albedo = Color(1.0, 1.0, 1.0, 1.0)
 lambertianTintMaterial.shader = LambertianTintShader()
 
-s1 = Sphere(0.6)
-s1.transform.position = Vector3(0, 2.4, 4)
-s1.material = lambertianTintMaterial
-scene_test.add_objects(s1)
+# s1 = Sphere(0.6)
+# s1.transform.position = Vector3(0, 2.4, 4)
+# s1.material = lambertianTintMaterial
+# scene_test.add_objects(s1)
 
-s2 = Sphere(1.2)
-s2.transform.position = Vector3(-0.2, -2.4, 4)
-s2.material = lambertianTintMaterial.clone()
-s2.material.set_texture(Texture("images/moon.jpg"))
-scene_test.add_objects(s2)
+# s2 = Sphere(1.2)
+# s2.transform.position = Vector3(-0.2, -2.4, 4)
+# s2.material = lambertianTintMaterial.clone()
+# s2.material.set_texture(Texture("images/moon.jpg"))
+# scene_test.add_objects(s2)
 
-# mesh = Mesh()
-# mesh.vertices = [Vector3(0.0, 0.0, 2.0), Vector3(2.0, 0.0, 2.0), Vector3(1.0, 2.0, 3.0)]
-# mesh.triangles = [0,1,2]
-# quadmesh.create(mesh, Vector3(0.0, 0.0, 2.0), Vector3(2.0, 8.0, 2.0), Vector3(1.0, 2.0, 3.0))
-# mesh.albedo = (255,255,0)
-# scene_test.add_objects(mesh)
+mesh = Mesh()
+quadmesh.create(mesh, Vector3(0.0, 2.0, 0.0), Vector3(2.0, 0.0, 0.0), Vector3(0.0, 0.0, 3.0))
+mesh.material = lambertianTintMaterial.clone()
+mesh.material.texture = Texture("images/zelda.jpg")
+scene_test.add_objects(mesh)
 
 c = Camera()
 c.fov = 90
@@ -97,8 +96,8 @@ else:
 
 render_extension = '.jpg'
 
-render_sizex = 250
-render_sizey = 250
+render_sizex = 50
+render_sizey = 50
 
 scene_test.render(render_sizex, render_sizey, render_image+ '_ssaa1' + render_extension)
 scene_test.set_ssaa(2)
