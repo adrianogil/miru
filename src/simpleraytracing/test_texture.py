@@ -17,6 +17,8 @@ import os
 
 from color import Color
 
+from texture import Texture
+
 from material import Material
 from shader_lambertiantint import LambertianTintShader
 
@@ -50,6 +52,7 @@ scene_test.add_objects(s1)
 s2 = Sphere(1.2)
 s2.transform.position = Vector3(-0.2, -2.4, 4)
 s2.material = lambertianTintMaterial.clone()
+s2.material.set_texture(Texture("images/moon.jpg"))
 scene_test.add_objects(s2)
 
 # mesh = Mesh()
@@ -94,15 +97,15 @@ else:
 
 render_extension = '.jpg'
 
-render_sizex = 200
-render_sizey = 200
+render_sizex = 250
+render_sizey = 250
 
-scene_test.render(render_sizex, render_sizey, render_image + render_extension)
-# scene_test.set_ssaa(2)
-# scene_test.render(render_sizex, render_sizey, render_image + '_ssaa2' + render_extension)
-# scene_test.set_ssaa(3)
-# scene_test.render(render_sizex, render_sizey, render_image + '_ssaa3' + render_extension)
-# scene_test.set_ssaa(4)
-# scene_test.render(render_sizex, render_sizey, render_image + '_ssaa4' + render_extension)
+scene_test.render(render_sizex, render_sizey, render_image+ '_ssaa1' + render_extension)
+scene_test.set_ssaa(2)
+scene_test.render(render_sizex, render_sizey, render_image + '_ssaa2' + render_extension)
+scene_test.set_ssaa(3)
+scene_test.render(render_sizex, render_sizey, render_image + '_ssaa3' + render_extension)
+scene_test.set_ssaa(4)
+scene_test.render(render_sizex, render_sizey, render_image + '_ssaa4' + render_extension)
 
 print('Scene rasterized in image path: %s' % (render_image,))

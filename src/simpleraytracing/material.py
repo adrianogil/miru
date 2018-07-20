@@ -14,7 +14,7 @@ class Material:
 
         return new_material
 
-    def set_texture(texture):
+    def set_texture(self, texture):
         self.texture = texture
 
     def set_shader(self, shader):

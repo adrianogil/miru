@@ -44,3 +44,16 @@ class Color:
             self.a = self.a * p
 
             return self
+
+    def tint(self, color, cloneit=True):
+        if cloneit:
+            new_c = self.clone()
+            new_c.tint(color, False)
+            return new_c
+        else:
+            self.r = self.r * color.r
+            self.g = self.g * color.g
+            self.b = self.b * color.b
+            self.a = self.a * color.a
+
+            return self

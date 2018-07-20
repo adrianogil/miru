@@ -1,6 +1,6 @@
 from transform import Transform
 
-from vector import Vector3
+from vector import Vector3,Vector2
 from color import Color
 
 import numpy as np
@@ -57,7 +57,7 @@ class Sphere:
 
         d2 = L.dot_product(L) - tca * tca
         if d2 > radius2:
-            return {'result': False, 'hit_point': Vector3.zero, 'normal' : None}
+            return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
         thc = np.sqrt(radius2 - d2)
         t0 = tca - thc
         t1 = tca + thc
@@ -70,10 +70,17 @@ class Sphere:
         if t0 < 0:
             t0 = t1 # if t0 is negative, let's use t1 instead
             if t0 < 0:
-                return {'result': False, 'hit_point': Vector3.zero, 'normal' : None} # both t0 and t1 are negative
+                return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} # both t0 and t1 are negative
         t = t0;
 
         hit_point = ray.origin.add(ray.direction.multiply(t))
         normal = hit_point.minus(self.transform.position).normalized()
 
-        return {'result': True, 'hit_point': hit_point, 'normal' : normal}
+        v = normal
+
+        longlat = Vector2(np.arctan2(v.x, v.z) + np.pi, np.arccos(-v.y));
+        uv = Vector2(longlat.x / (2 * np.pi), longlat.y / np.pi);
+        # uv.y = 1f - uv.y;
+        # uv.x = 1f - uv.x;
+
+        return {'result': True, 'hit_point': hit_point, 'normal' : normal, 'uv' : uv}

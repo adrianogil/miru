@@ -4,13 +4,13 @@ class LambertianTintShader:
 
     def frag_render(self, material, scene, interception):
         light = scene.get_light()
-        
+
         render_color = material.albedo.clone()
 
         if 'uv' in interception:
             uv = interception['uv']
-            if self.texture != None:
-                render_color = render_color * self.texture.tex2D(uv)
+            if material.texture != None:
+                render_color = render_color.tint(material.texture.tex2D(uv))
 
         light_direction = light.transform.position.minus(interception['hit_point']).normalized()
         dotNL = light_direction.dot_product(interception['normal'])
