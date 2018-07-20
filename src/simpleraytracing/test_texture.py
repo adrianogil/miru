@@ -104,8 +104,8 @@ else:
 
 render_extension = '.jpg'
 
-render_sizex = 250
-render_sizey = 250
+render_sizex = 200
+render_sizey = 200
 
 scene_test.render(render_sizex, render_sizey, render_image+ '_ssaa1' + render_extension)
 scene_test.set_ssaa(2)
