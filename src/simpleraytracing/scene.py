@@ -45,7 +45,7 @@ class Scene:
     def get_light(self):
         return self.light
 
-    def render(self, pixel_height, pixel_width, image_file):
+    def render(self, pixel_height, pixel_width, image_file=""):
 
         target_pixel_height = pixel_height
         target_pixel_width = pixel_width
@@ -138,5 +138,8 @@ class Scene:
                     render_data.pixels[x,y] = tuple(colors)
         else:
             render_data = ssaa_render_data
+
+        if image_file == '':
+            return np.ndarray(render_data.pixels)
 
         render_data.img.save(image_file)
