@@ -60,26 +60,29 @@ render_sizex = 100
 render_sizey = 120
 
 total_time = 10.0 # Seconds
-fps = 30 # Frames per seconds
-delta_time = total_time * 1.0 / fps
+fps = 15 # Frames per seconds
+delta_time = 1.0 / fps
 
 t = 0
 frame_count = 0
 
-v1 = Vector3(1.0, 0.0, 0.0)
-v2 = Vector3(0.0, 1.0, 0.0)
+v1 = Vector3(3.0, 0.0, -1.0)
+v2 = Vector3(0.0, 3.0, -2.0)
 
 render_image = render_image + render_extension
+
+animation_velocity = 0.5
 
 with imageio.get_writer(render_image, mode='I', duration=total_time) as writer:
     for f in xrange(0, int(fps*total_time)):
         p = Vector3(0.0, 2.0, -2.0)
-        p = p.add(v1.multiply(np.cos(t*np.pi)))
-        p = p.add(v2.multiply(np.sin(t*np.pi)))
+        p = p.add(v1.multiply(np.cos(animation_velocity*t*np.pi)))
+        p = p.add(v2.multiply(np.sin(animation_velocity*t*np.pi)))
         
         light.transform.position = p
         
         t = t + delta_time
+        frame_count = frame_count + 1
 
         scene_test.render(render_sizex, render_sizey, 'temp/git_img_' + str(frame_count) + '.jpg')
         writer.append_data(imageio.imread('temp/git_img_' + str(frame_count) + '.jpg'))
