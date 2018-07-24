@@ -23,3 +23,13 @@ class Transform:
     def apply_transform(self, v):
         new_value = self.get_transform_matrix().dot(v.homo_value())
         return Vector3(new_value[0], new_value[1], new_value[2])
+
+    def apply_transform_to_direction(self, d):
+        homo_d = d.homo_value()
+        homo_d[3][0] = 0
+        homo_d = np.transpose(homo_d)
+        # print(str(homo_d))
+        new_value = np.dot(homo_d, self.get_transform_matrix())
+        new_value = new_value[0]
+        # print(str(new_value))
+        return Vector3(new_value[0], new_value[1], new_value[2])

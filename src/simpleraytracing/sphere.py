@@ -78,6 +78,8 @@ class Sphere:
 
         v = normal
 
+        v = self.transform.apply_transform_to_direction(v)
+
         longlat = Vector2(np.arctan2(v.x, v.z) + np.pi, np.arccos(-v.y));
         uv = Vector2(longlat.x / (2 * np.pi), longlat.y / np.pi);
         # uv.y = 1f - uv.y;
