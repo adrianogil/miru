@@ -3,9 +3,8 @@ from ray import Ray
 
 import numpy as np
 
-from vector import Vector3
-
-from color import Color
+from engine.vector import Vector3
+from engine.color import Color
 
 try:
     range = xrange

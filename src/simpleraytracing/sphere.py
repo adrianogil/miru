@@ -1,7 +1,6 @@
-from transform import Transform
-
-from vector import Vector3,Vector2
-from color import Color
+from engine.transform import Transform
+from engine.vector import Vector3,Vector2
+from engine.color import Color
 
 import numpy as np
 

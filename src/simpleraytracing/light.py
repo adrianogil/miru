@@ -1,5 +1,5 @@
-from transform import Transform
-from vector import Vector3
+from engine.transform import Transform
+from engine.vector import Vector3
 
 
 class Light:
