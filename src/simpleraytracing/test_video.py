@@ -36,8 +36,6 @@ try:
 except NameError:
     pass
 
-
-
 def render_random_spheres(scene):
     total_sphere = random.randint(1,15)
 
