@@ -8,6 +8,14 @@ function set-miru-python-path()
     fi
 }
 
+function miru-raymarching()
+{
+    target_scene_file=$1
+
+    set-miru-python-path
+    python2 -m raymarching.scene $target_scene_file
+}
+
 function miru-raymarching-cubes()
 {
     set-miru-python-path

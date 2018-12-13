@@ -155,3 +155,9 @@ class Scene:
             return np.ndarray(render_data.pixels)
 
         render_data.img.save(image_file)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1:
+        target_scene_file = sys.argv[1]
+        print('Parsing file %s' % (target_scene_file))
