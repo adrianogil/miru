@@ -33,6 +33,11 @@ class Scene:
         self.min_marching_distance = 0.06
         self.max_marching_steps = 40
 
+        self.render_height = 50
+        self.render_width = 50
+
+        self.target_image_file = "test.jpg"
+
     def add_objects(self, obj):
         self.objects.append(obj)
 
@@ -76,10 +81,20 @@ class Scene:
 
         return pixel_color
 
-    def render(self, pixel_height, pixel_width, image_file=""):
+    def render(self, pixel_height=-1, pixel_width=-1, image_file=""):
 
-        target_pixel_height = pixel_height
-        target_pixel_width = pixel_width
+        if pixel_height > 0:
+            target_pixel_height = pixel_height
+        else:
+            target_pixel_height = self.render_height
+
+        if pixel_width > 0:
+            target_pixel_width = pixel_width
+        else:
+            target_pixel_width = self.render_width
+
+        if image_file == "":
+            image_file = self.target_image_file
 
         ssaa_render_data = RenderData()
         ssaa_render_data.pixel_height = self.ssaa_level * pixel_height
@@ -126,12 +141,12 @@ class Scene:
             render_data.img = Image.new( 'RGB', (target_pixel_width, target_pixel_height), "black") # create a new black image
             render_data.pixels = render_data.img.load() # create the pixel map
 
-            ssaa_factor = 1.0/(self.ssaa_level*self.ssaa_level)
+            half_ssaa_level = 0.5 * self.ssaa_level
 
             for x in range(0, target_pixel_width):
                 for y in range(0, target_pixel_height):
 
-                    colors = [0,0,0]
+                    colors = [0, 0, 0]
 
                     for c in range(0, 3):
 
@@ -140,8 +155,11 @@ class Scene:
 
                         for fx in range(0, self.ssaa_level):
                             for fy in range(0, self.ssaa_level):
-                                ix = int(x*self.ssaa_level + fx - 0.5*self.ssaa_level)
-                                iy = int(y*self.ssaa_level + fy - 0.5*self.ssaa_level)
+                                ix = x * self.ssaa_level + fx - half_ssaa_level
+                                iy = y * self.ssaa_level + fy - half_ssaa_level
+
+                                ix = int(ix)
+                                iy = int(iy)
 
                                 if ix >= 0 and ix < ssaa_render_data.pixel_width and \
                                    iy >= 0 and iy < ssaa_render_data.pixel_height:
@@ -175,14 +193,8 @@ if __name__ == "__main__":
         parser = SceneParser(objs)
         parser.parse(target_scene_file, target_scene)
 
-        if os.path.exists("/sdcard/Rendering/"):
-            render_image = "/sdcard/Rendering/test"
+        if len(sys.argv) > 2:
+            target_image_file = sys.argv[2]
+            target_scene.render(image=target_image_file)
         else:
-            render_image = 'test'
-
-        render_extension = '.jpg'
-
-        render_sizex = 50
-        render_sizey = 50
-
-        target_scene.render(render_sizex, render_sizey, render_image + render_extension)
+            target_scene.render()

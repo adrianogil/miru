@@ -1,9 +1,11 @@
 import json
 
+
 class SceneParser:
     def __init__(self, objects_parser):
         # objects_parser is a dictionary by type name
         self.objects_parser = objects_parser
+        self.target_scene = None
 
     def parse(self, scene_file, target_scene):
         print("SceneParser - parsing - " + str(scene_file))
@@ -20,3 +22,14 @@ class SceneParser:
                 new_obj = self.objects_parser[o['type']](o)
                 if new_obj is not None:
                     target_scene.add_objects(new_obj)
+
+        if 'render' in scene_data:
+            render_data = scene_data['render']
+            if 'height' in render_data:
+                target_scene.render_height = render_data['height']
+
+            if 'width' in render_data:
+                target_scene.render_width = render_data['width']
+
+            if 'to_image' in render_data:
+                target_scene.target_image_file = render_data['to_image']

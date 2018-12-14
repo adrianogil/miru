@@ -11,5 +11,10 @@
     ],
     "camera": {
         "fov" :           90
+    },
+    "render": {
+        "height"    : 100,
+        "width"     : 100,
+        "to_image"  : "test.png"
     }
 }
