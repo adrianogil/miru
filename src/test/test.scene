@@ -1,9 +1,15 @@
 {
-    "objects": [
+    "objects":[
         {
-            "type":     "cube",
-            "position": [2.2, 0.2, 4.3],
-            "size":     [2.1, 4.7, 1.3],
+            "type"     :  "cube",
+            "size"     :  [2.1, 2.7, 1.3],
+            "color"    :  [0.8, 0,3, 0.2, 1],
+            "transform":  {
+                "position": [-2.2, 0.2, 5.3]
+            }
         }
-    ]
+    ],
+    "camera": {
+        "fov" :           90
+    }
 }

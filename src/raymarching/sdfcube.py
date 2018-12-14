@@ -1,6 +1,8 @@
 from engine.transform import Transform
 from engine.color import Color
 
+from engine.vector import Vector3
+
 class SDFCube:
     def __init__(self, size):
         self.size = size
@@ -37,3 +39,20 @@ class SDFCube:
     def render(self, scene, position):
         return self.color;
 
+    @staticmethod
+    def parse(data):
+        # print('parsing data ' + str(data))
+        cube = None
+
+        if 'size' in data:
+            size = data['size']
+            cube = SDFCube(Vector3(size[0], size[1], size[2]))
+
+            if 'transform' in data:
+                cube.transform.parse(data['transform'])
+
+            if 'color' in data:
+                color = data['color']
+                cube.color = Color(color[0], color[1], color[2], color[3])
+
+        return cube

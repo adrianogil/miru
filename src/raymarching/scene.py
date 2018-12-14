@@ -1,9 +1,15 @@
 from PIL import Image
 import numpy as np
+import os
 
 from engine.vector import Vector3
-
 from engine.color import Color
+
+from engine.camera import Camera
+from engine.sceneparser import SceneParser
+
+from sdfcube import SDFCube
+
 
 try:
     range = xrange
@@ -161,3 +167,22 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         target_scene_file = sys.argv[1]
         print('Parsing file %s' % (target_scene_file))
+        objs = {
+            "cube"   : SDFCube.parse,
+            "camera" : Camera.parse,
+        }
+        target_scene = Scene()
+        parser = SceneParser(objs)
+        parser.parse(target_scene_file, target_scene)
+
+        if os.path.exists("/sdcard/Rendering/"):
+            render_image = "/sdcard/Rendering/test"
+        else:
+            render_image = 'test'
+
+        render_extension = '.jpg'
+
+        render_sizex = 50
+        render_sizey = 50
+
+        target_scene.render(render_sizex, render_sizey, render_image + render_extension)

@@ -33,3 +33,8 @@ class Transform:
         new_value = new_value[0]
         # print(str(new_value))
         return Vector3(new_value[0], new_value[1], new_value[2])
+
+    def parse(self, data):
+        if 'position' in data:
+            pos = data['position']
+            self.position = Vector3(pos[0], pos[1], pos[2])
