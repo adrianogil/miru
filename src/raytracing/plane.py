@@ -20,6 +20,8 @@ class Plane:
         self.material = Material.default()
 
     def pre_render(self):
+        self.transform.update_internals()
+
         points = []
 
         for p in self.boundary_points:

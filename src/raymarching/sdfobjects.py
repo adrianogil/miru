@@ -12,7 +12,7 @@ class SDFCube:
         self.material = Material.default()
 
     def pre_render(self):
-        pass
+        self.transform.update_internals()
 
     def distance(self, position):
 
@@ -73,7 +73,7 @@ class SDFSphere:
         self.material = Material.default()
 
     def pre_render(self):
-        pass
+        self.transform.update_internals()
 
     def distance(self, position):
         return position.minus(self.transform.position).magnitude() - self.radius

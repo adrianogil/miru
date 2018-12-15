@@ -15,10 +15,15 @@ class Transform:
         self.left = Vector3(-1,0,0)
         self.up = Vector3(0,1,0)
 
-    def get_transform_matrix(self):
-        return t_utils.getTranslationMatrix(self.position).dot(
+        self.transform_matrix = None
+
+    def update_internals(self):
+        self.transform_matrix = t_utils.getTranslationMatrix(self.position).dot(
                 t_utils.getCompleteOrientationMatrix(self.rotation)
             ).dot(t_utils.getScalingMatrix(self.scale))
+
+    def get_transform_matrix(self):
+        return self.transform_matrix
 
     def apply_transform(self, v):
         new_value = self.get_transform_matrix().dot(v.homo_value())

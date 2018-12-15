@@ -43,6 +43,7 @@ class Cube:
             p.albedo = (random.randint(20,255), random.randint(20,255), random.randint(20,255))    
 
     def pre_render(self):
+        self.transform.update_internals()
         for p in self.planes:
             p.transform = self.transform
             p.material = self.material

@@ -20,7 +20,7 @@ class Mesh:
         self.triangles.append(t3)
 
     def pre_render(self):
-        pass
+        self.transform.update_internals()
 
     def render(self, scene, interception):
         if self.material != None:

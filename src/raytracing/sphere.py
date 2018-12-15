@@ -17,7 +17,7 @@ class Sphere:
         self.material = Material.default()
 
     def pre_render(self):
-        pass
+        self.transform.update_internals()
 
     def set_material(self, material):
         self.material = material

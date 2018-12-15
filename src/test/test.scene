@@ -12,6 +12,17 @@
             }
         },
         {
+            "type"     :  "cube",
+            "transform":  {
+                "position": [1.2, -2.2, 8.3],
+                "scale"   : [1, 1, 1]
+            },
+            "material":   {
+                "shader" : "unlit",
+                "albedo" : [0.8, 0.3, 0.2, 1.0]
+            }
+        },
+        {
             "type"     :  "sphere",
             "radius"   :  1.6,
             "transform":  {
