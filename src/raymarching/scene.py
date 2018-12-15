@@ -8,7 +8,9 @@ from engine.color import Color
 from engine.camera import Camera
 from engine.sceneparser import SceneParser
 
-from sdfcube import SDFCube
+from engine.material import Material
+
+from raymarching.sdfobjects import SDFCube, SDFSphere
 
 
 try:
@@ -68,11 +70,11 @@ class Scene:
             for o in self.objects:
                 distance = o.distance(position)
                 if distance < self.min_marching_distance:
-                    pixel_color = o.render(self, position)
+                    pixel_color = o.render(self, {"hit_point": position})
                     break
                 if distance < min_distance:
                     min_distance = distance
-            
+
             next_distance = min_distance
 
             if find_surface:
@@ -180,14 +182,16 @@ class Scene:
 
         render_data.img.save(image_file)
 
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1:
         target_scene_file = sys.argv[1]
         print('Parsing file %s' % (target_scene_file))
         objs = {
-            "cube"   : SDFCube.parse,
-            "camera" : Camera.parse,
+            "cube": SDFCube.parse,
+            "sphere": SDFSphere.parse,
+            "camera": Camera.parse,
         }
         target_scene = Scene()
         parser = SceneParser(objs)
@@ -195,6 +199,6 @@ if __name__ == "__main__":
 
         if len(sys.argv) > 2:
             target_image_file = sys.argv[2]
-            target_scene.render(image=target_image_file)
+            target_scene.render(image_file=target_image_file)
         else:
             target_scene.render()

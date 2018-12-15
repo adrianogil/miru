@@ -38,3 +38,7 @@ class Transform:
         if 'position' in data:
             pos = data['position']
             self.position = Vector3(pos[0], pos[1], pos[2])
+
+        if 'scale' in data:
+            s = data['scale']
+            self.scale = Vector3(s[0], s[1], s[2])

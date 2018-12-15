@@ -61,5 +61,10 @@ class Color:
             return self
 
     @staticmethod
+    def from_array(a):
+        return Color(a[0], a[1], a[2], a[3])
+
+    @staticmethod
     def random():
         return Color(float(random.randint(0,255))*1.0/255.0, float(random.randint(0,255))*1.0/255.0, float(random.randint(0,255))*1.0/255.0, 1.0)
+    

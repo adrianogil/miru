@@ -2,6 +2,8 @@ from engine.transform import Transform
 from engine.vector import Vector3,Vector2
 from engine.color import Color
 
+from engine.material import Material
+
 import numpy as np
 
 class Sphere:
@@ -12,7 +14,7 @@ class Sphere:
 
         self.transform = Transform()
 
-        self.material = None
+        self.material = Material.default()
 
     def pre_render(self):
         pass
@@ -24,21 +26,7 @@ class Sphere:
         if self.material != None:
             return self.material.render(scene, interception)
 
-        light = scene.get_light()
-
-        if light is None:
-            return self.albedo
-        else:
-            render_color = self.albedo.clone()
-
-            light_direction = light.transform.position.minus(interception['hit_point']).normalized()
-            dotNL = light_direction.dot_product(interception['normal'])
-            # print("Dot light and normal: " + str(dotNL))
-            rgb_value = render_color.rgb().multiply(max(0.0, dotNL))
-            rgb_value = rgb_value.multiply(light.intensity)
-            render_color.set_rgb(rgb_value)
-
-            return render_color
+        print('sphere has no material')
 
         return self.albedo
 
@@ -79,9 +67,29 @@ class Sphere:
 
         v = self.transform.apply_transform_to_direction(v)
 
-        longlat = Vector2(np.arctan2(v.x, v.z) + np.pi, np.arccos(-v.y));
-        uv = Vector2(longlat.x / (2 * np.pi), longlat.y / np.pi);
+        try:
+            longlat = Vector2(np.arctan2(v.x, v.z) + np.pi, np.arccos(-v.y))
+            uv = Vector2(longlat.x / (2 * np.pi), longlat.y / np.pi)
+        except RuntimeWarning:
+            uv = Vector2.zero()
         # uv.y = 1f - uv.y;
         # uv.x = 1f - uv.x;
 
         return {'result': True, 'hit_point': hit_point, 'normal' : normal, 'uv' : uv}
+
+    @staticmethod
+    def parse(data):
+        # print('parsing data ' + str(data))
+        sphere = Sphere(1.0)
+
+        if 'radius' in data:
+            sphere.radius = float(data['radius'])
+
+        if 'transform' in data:
+            sphere.transform.parse(data['transform'])
+
+        if 'color' in data:
+            color = data['color']
+            sphere.albedo = Color(color[0], color[1], color[2], color[3])
+
+        return sphere

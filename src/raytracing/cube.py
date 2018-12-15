@@ -1,16 +1,21 @@
-from engine.transform import Transform
-
-from plane import Plane
-
-from vector import Vector3
-
-import numpy as np
-
 import random
 
+from engine.transform import Transform
+from engine.vector import Vector3, Vector2
+from engine.color import Color
+
+from raytracing.plane import Plane
+
+
 class Cube:
-    def __init__(self, v1, v2, v3):
-        
+    def __init__(self, v1=None, v2=None, v3=None):
+        if v1 is None:
+            v1 = Vector3.up()
+        if v2 is None:
+            v2 = Vector3.right()
+        if v3 is None:
+            v3 = Vector3.forward()
+
         ref_pos1 = v1.multiply(-0.5).add(v2.multiply(-0.5)).add(v3.multiply(-0.5))
         ref_pos2 = v1.multiply(0.5).add(v2.multiply(0.5)).add(v3.multiply(0.5))
         
@@ -18,7 +23,11 @@ class Cube:
         v2p = v2.multiply(-1)
         v3p = v3.multiply(-1)
 
-        self.albedo = (255,0,0)
+        self.albedo = None
+
+        self.transform = Transform()
+
+        self.material = None
 
         self.transform = Transform()
         self.planes = [
@@ -36,20 +45,45 @@ class Cube:
     def pre_render(self):
         for p in self.planes:
             p.transform = self.transform
-            p.pre_render()            
+            p.material = self.material
+            p.pre_render()
+
+    def render(self, scene, interception):
+        if 'plane' in interception:
+            return interception['plane'].render(scene, interception)
+
+        print('no plane in interception')
+
+        return self.albedo
 
     def intercepts(self, ray):
         min_depth_distance = 1000
 
-        result = (False, 0)
+        intersection = {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} 
 
         for p in self.planes:
             intersection_result = p.intercepts(ray)
-            if intersection_result[0]:
-                depth_distance = ray.origin.minus(intersection_result[1]).magnitude()
+            if intersection_result['result']:
+                depth_distance = ray.origin.minus(intersection_result['hit_point']).magnitude()
                 if depth_distance < min_depth_distance:
                     min_depth_distance = depth_distance
                     self.albedo = p.albedo
-                    result = intersection_result
+                    intersection['result'] = True
+                    intersection['hit_point'] = intersection_result['hit_point']
+                    intersection['plane'] = p
 
-        return result
+        return intersection
+
+    @staticmethod
+    def parse(data):
+        # print('parsing data ' + str(data))
+        cube = Cube()
+
+        if 'transform' in data:
+            cube.transform.parse(data['transform'])
+
+        if 'color' in data:
+            color = data['color']
+            cube.color = Color(color[0], color[1], color[2], color[3])
+
+        return cube

@@ -3,8 +3,16 @@ from ray import Ray
 
 import numpy as np
 
+from engine.camera import Camera
 from engine.vector import Vector3
 from engine.color import Color
+
+from engine.sceneparser import SceneParser
+
+from engine.material import Material
+
+from raytracing.cube import Cube
+from raytracing.sphere import Sphere
 
 try:
     range = xrange
@@ -22,9 +30,14 @@ class Scene:
     def __init__(self):
         self.objects = []
         self.post_processing_effects = []
-        self.background_color = Color(0.0,0.0,0.0,1.0)
+        self.background_color = Color(0.0, 0.0, 0.0, 1.0)
         self.light = None
         self.ssaa_level = 1
+
+        self.render_height = 50
+        self.render_width = 50
+
+        self.target_image_file = "test.jpg"
 
     def add_objects(self, obj):
         self.objects.append(obj)
@@ -44,10 +57,42 @@ class Scene:
     def get_light(self):
         return self.light
 
-    def render(self, pixel_height, pixel_width, image_file=""):
+    def raytracing(self, pixel_pos):
+        ray = Ray(self.camera.transform.position, pixel_pos)
 
-        target_pixel_height = pixel_height
-        target_pixel_width = pixel_width
+        pixel_color = self.background_color
+
+        min_depth_distance = self.camera.far
+
+        camera_pos = self.camera.transform.position
+
+        for o in self.objects:
+            intersection = o.intercepts(ray)
+
+            if intersection['result']:
+                hit_point = intersection['hit_point']
+                distance_vector = hit_point.minus(camera_pos)
+                depth_distance = distance_vector.magnitude()
+                if depth_distance < min_depth_distance:
+                    pixel_color = o.render(self, intersection)
+                    min_depth_distance = depth_distance
+
+        return pixel_color
+
+    def render(self, pixel_height=-1, pixel_width=-1, image_file=""):
+
+        if pixel_height > 0:
+            target_pixel_height = pixel_height
+        else:
+            target_pixel_height = self.render_height
+
+        if pixel_width > 0:
+            target_pixel_width = pixel_width
+        else:
+            target_pixel_width = self.render_width
+
+        if image_file == "":
+            image_file = self.target_image_file
 
         ssaa_render_data = RenderData()
         ssaa_render_data.pixel_height = self.ssaa_level * pixel_height
@@ -75,23 +120,7 @@ class Scene:
                     .add(self.camera.transform.up.multiply((-1) * (y - 0.5*pixel_height)/(pixel_height) * height_size))\
                     .add(nearplane_pos)
 
-                ray = Ray(self.camera.transform.position, pixel_pos)
-
-                pixel_color = self.background_color
-
-                obj_normal = Vector3.up()
-                min_depth_distance = self.camera.far
-
-                for o in self.objects:
-                    intersection = o.intercepts(ray)
-
-                    if intersection['result']:
-
-                        depth_distance = intersection['hit_point'].minus(self.camera.transform.position).magnitude()
-                        if depth_distance < min_depth_distance:
-                            pixel_color = o.render(self, intersection)
-                            # import pdb; pdb.set_trace() # Start debugger
-                            min_depth_distance = depth_distance
+                pixel_color = self.raytracing(pixel_pos)
 
                 ssaa_render_data.pixels[x,y] = pixel_color.to_tuple(3)
 
@@ -142,3 +171,24 @@ class Scene:
             return np.ndarray(render_data.pixels)
 
         render_data.img.save(image_file)
+
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1:
+        target_scene_file = sys.argv[1]
+        print('Parsing file %s' % (target_scene_file))
+        objs = {
+            "cube": Cube.parse,
+            "sphere": Sphere.parse,
+            "camera": Camera.parse
+        }
+        target_scene = Scene()
+        parser = SceneParser(objs)
+        parser.parse(target_scene_file, target_scene)
+
+        if len(sys.argv) > 2:
+            target_image_file = sys.argv[2]
+            target_scene.render(image_file=target_image_file)
+        else:
+            target_scene.render()

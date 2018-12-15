@@ -8,12 +8,22 @@ function set-miru-python-path()
     fi
 }
 
+function miru-raytracing()
+{
+    target_scene_file=$1
+    target_render_image=$2
+
+    set-miru-python-path
+    python2 -m raytracing.scene $target_scene_file $target_render_image
+}
+
 function miru-raymarching()
 {
     target_scene_file=$1
+    target_render_image=$2
 
     set-miru-python-path
-    python2 -m raymarching.scene $target_scene_file
+    python2 -m raymarching.scene $target_scene_file $target_render_image
 }
 
 function miru-raymarching-cubes()

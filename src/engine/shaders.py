@@ -1,3 +1,20 @@
+class UnlitShader:
+    def __init__(self):
+        pass
+
+    def frag_render(self, material, scene, interception):
+        render_color = material.albedo.clone()
+
+        # print("unlitshader::frag_render")
+
+        if 'uv' in interception:
+            uv = interception['uv']
+            if material.texture is not None:
+                render_color = render_color.tint(material.texture.tex2D(uv))
+
+        return render_color
+
+
 class LambertianTintShader:
     def __init__(self):
         pass

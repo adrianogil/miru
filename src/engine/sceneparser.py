@@ -1,5 +1,7 @@
 import json
 
+from engine.material import Material
+
 
 class SceneParser:
     def __init__(self, objects_parser):
@@ -22,6 +24,9 @@ class SceneParser:
                 new_obj = self.objects_parser[o['type']](o)
                 if new_obj is not None:
                     target_scene.add_objects(new_obj)
+
+                    if 'material' in o:
+                        new_obj.material = Material.parse(o['material'])
 
         if 'render' in scene_data:
             render_data = scene_data['render']

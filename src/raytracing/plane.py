@@ -1,5 +1,7 @@
 from engine.transform import Transform
-from engine.vector import Vector3
+from engine.vector import Vector3, Vector2
+
+from engine.material import Material
 
 import numpy as np
 
@@ -15,6 +17,7 @@ class Plane:
         self.boundary_points = points
         self.albedo = (0,255,0)
         self.transform = Transform()
+        self.material = Material.default()
 
     def pre_render(self):
         points = []
@@ -26,6 +29,14 @@ class Plane:
         self.p0 = points[0]
 
         self.points = points
+
+    def render(self, scene, interception):
+        if self.material != None:
+            return self.material.render(scene, interception)
+
+        print('no material')
+
+        return self.albedo
 
     def intercepts(self, ray):
         
@@ -56,9 +67,9 @@ class Plane:
                     b = points[(i+1)%len(points)].minus(intersection_point).normalized()
                     Nt = a.cross_product(b).normalized()
                     if N.dot_product(Nt) < 0:
-                        return (False, Vector3.zero())
+                        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
                     # print('Passed on ' + str(i))
 
-                return (True, intersection_point)
+                return {'result': True, 'hit_point': intersection_point, 'normal' : None, 'uv' : Vector2.zero}
 
-        return (False, Vector3.zero())
+        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} 

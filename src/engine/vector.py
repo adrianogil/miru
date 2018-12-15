@@ -89,17 +89,23 @@ class Vector3:
 
     @staticmethod
     def zero():
-        return Vector3(0.0,0.0,0.0)
+        return Vector3(0.0, 0.0, 0.0)
 
     @staticmethod
     def one():
-        return Vector3(1.0,1.0,1.0)
+        return Vector3(1.0, 1.0, 1.0)
 
     @staticmethod
     def up():
-        return Vector3(0.0,1.0,0.0)
+        return Vector3(0.0, 1.0, 0.0)
 
+    @staticmethod
+    def right():
+        return Vector3(1.0, 0.0, 0.0)
 
+    @staticmethod
+    def forward():
+        return Vector3(0.0, 0.0, 1.0)
 
 def createVector(x,y,z):
     return Vector3(x,y,z)
