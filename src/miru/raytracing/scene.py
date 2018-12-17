@@ -11,8 +11,8 @@ from miru.engine.sceneparser import SceneParser
 
 from miru.engine.material import Material
 
-from raytracing.cube import Cube
-from raytracing.sphere import Sphere
+from miru.raytracing.cube import Cube
+from miru.raytracing.sphere import Sphere
 
 try:
     range = xrange

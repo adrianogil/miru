@@ -1,6 +1,7 @@
 import json
 
 from miru.engine.material import Material
+from miru.engine.light import Light
 
 
 class SceneParser:
@@ -17,6 +18,10 @@ class SceneParser:
         if 'camera' in scene_data:
             c = self.objects_parser["camera"](scene_data["camera"])
             target_scene.set_camera(c)
+
+        if 'light' in scene_data:
+            light = Light.parse(scene_data['light'])
+            target_scene.set_light(light)
 
         for o in scene_data["objects"]:
             print(o['type'])

@@ -61,6 +61,11 @@ class Color:
             return self
 
     @staticmethod
+    def white():
+        return Color(1.0, 1.0, 1.0, 1.0)
+
+
+    @staticmethod
     def from_array(a):
         return Color(a[0], a[1], a[2], a[3])
 
