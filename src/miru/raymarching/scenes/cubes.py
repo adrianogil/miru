@@ -1,8 +1,8 @@
-from raymarching.scene import Scene
-from raymarching.sdfcube import SDFCube
+from miru.raymarching.scene import Scene
+from miru.raymarching.sdfcube import SDFCube
 
-from engine.camera import Camera
-from engine.vector import Vector3
+from miru.engine.camera import Camera
+from miru.engine.vector import Vector3
 
 import os
 

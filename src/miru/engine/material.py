@@ -1,6 +1,6 @@
 from color import Color
 
-from engine.shaders import UnlitShader, LambertianTintShader
+from miru.engine.shaders import UnlitShader, LambertianTintShader
 
 class Material:
     def __init__(self):

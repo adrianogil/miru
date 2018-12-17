@@ -1,8 +1,8 @@
 import random
 
-from engine.transform import Transform
-from engine.vector import Vector3, Vector2
-from engine.color import Color
+from miru.engine.transform import Transform
+from miru.engine.vector import Vector3, Vector2
+from miru.engine.color import Color
 
 from raytracing.plane import Plane
 

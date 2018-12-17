@@ -5,7 +5,7 @@ from sphere import Sphere
 from plane import Plane
 from cube import Cube
 
-from engine.vector import Vector3
+from miru.engine.vector import Vector3
 
 from mesh import Mesh
 import quadmesh
@@ -19,8 +19,8 @@ from color import Color
 
 from texture import Texture
 
-from engine.material import Material
-from engine.shader_lambertiantint import LambertianTintShader
+from miru.engine.material import Material
+from miru.engine.shader_lambertiantint import LambertianTintShader
 
 from meanfilter import MeanFilter
 from kernelfilter import KernelFilter

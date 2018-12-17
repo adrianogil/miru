@@ -1,7 +1,7 @@
-from engine.transform import Transform
-from engine.color import Color
+from miru.engine.transform import Transform
+from miru.engine.color import Color
 
-from engine.vector import Vector3
+from miru.engine.vector import Vector3
 
 class SDFCube:
     def __init__(self, size):

@@ -1,6 +1,6 @@
 import json
 
-from engine.material import Material
+from miru.engine.material import Material
 
 
 class SceneParser:

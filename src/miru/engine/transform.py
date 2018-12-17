@@ -4,23 +4,24 @@ import numpy as np
 
 import transformutils as t_utils
 
+
 class Transform:
     def __init__(self):
-        self.position = Vector3(0,0,0)
-        self.rotation = Vector3(0,0,0)
+        self.position = Vector3(0, 0, 0)
+        self.rotation = Vector3(0, 0, 0)
         self.scale = Vector3.one()
 
-        self.forward = Vector3(0,0,1)
-        self.right = Vector3(1,0,0)
-        self.left = Vector3(-1,0,0)
-        self.up = Vector3(0,1,0)
+        self.forward = Vector3(0, 0, 1)
+        self.right = Vector3(1, 0, 0)
+        self.left = Vector3(-1, 0, 0)
+        self.up = Vector3(0, 1, 0)
 
         self.transform_matrix = None
 
     def update_internals(self):
         self.transform_matrix = t_utils.getTranslationMatrix(self.position).dot(
-                t_utils.getCompleteOrientationMatrix(self.rotation)
-            ).dot(t_utils.getScalingMatrix(self.scale))
+            t_utils.getCompleteOrientationMatrix(self.rotation)
+        ).dot(t_utils.getScalingMatrix(self.scale))
 
     def get_transform_matrix(self):
         return self.transform_matrix

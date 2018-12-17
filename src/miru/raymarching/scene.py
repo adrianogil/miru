@@ -1,18 +1,17 @@
 from PIL import Image
-from ray import Ray
-
 import numpy as np
+import os
 
-from engine.camera import Camera
-from engine.vector import Vector3
-from engine.color import Color
+from miru.engine.vector import Vector3
+from miru.engine.color import Color
 
-from engine.sceneparser import SceneParser
+from miru.engine.camera import Camera
+from miru.engine.sceneparser import SceneParser
 
-from engine.material import Material
+from miru.engine.material import Material
 
-from raytracing.cube import Cube
-from raytracing.sphere import Sphere
+from miru.raymarching.sdfobjects import SDFCube, SDFSphere
+
 
 try:
     range = xrange
@@ -30,9 +29,11 @@ class Scene:
     def __init__(self):
         self.objects = []
         self.post_processing_effects = []
-        self.background_color = Color(0.0, 0.0, 0.0, 1.0)
+        self.background_color = Color(0.0,0.0,0.0,1.0)
         self.light = None
         self.ssaa_level = 1
+        self.min_marching_distance = 0.06
+        self.max_marching_steps = 40
 
         self.render_height = 50
         self.render_width = 50
@@ -57,25 +58,28 @@ class Scene:
     def get_light(self):
         return self.light
 
-    def raytracing(self, pixel_pos):
-        ray = Ray(self.camera.transform.position, pixel_pos)
+    def raymarching(self, position, view_direction):
+        min_distance = 10000
+        next_distance = self.min_marching_distance
+
+        find_surface = False
 
         pixel_color = self.background_color
 
-        min_depth_distance = self.camera.far
+        for s in range(0, self.max_marching_steps):
+            for o in self.objects:
+                distance = o.distance(position)
+                if distance < self.min_marching_distance:
+                    pixel_color = o.render(self, {"hit_point": position})
+                    break
+                if distance < min_distance:
+                    min_distance = distance
 
-        camera_pos = self.camera.transform.position
+            next_distance = min_distance
 
-        for o in self.objects:
-            intersection = o.intercepts(ray)
-
-            if intersection['result']:
-                hit_point = intersection['hit_point']
-                distance_vector = hit_point.minus(camera_pos)
-                depth_distance = distance_vector.magnitude()
-                if depth_distance < min_depth_distance:
-                    pixel_color = o.render(self, intersection)
-                    min_depth_distance = depth_distance
+            if find_surface:
+                break
+            position = position.add(view_direction.multiply(next_distance))
 
         return pixel_color
 
@@ -120,7 +124,10 @@ class Scene:
                     .add(self.camera.transform.up.multiply((-1) * (y - 0.5*pixel_height)/(pixel_height) * height_size))\
                     .add(nearplane_pos)
 
-                pixel_color = self.raytracing(pixel_pos)
+                position = pixel_pos
+                view_direction = pixel_pos.minus(self.camera.transform.position).normalized()
+
+                pixel_color = self.raymarching(position, view_direction)
 
                 ssaa_render_data.pixels[x,y] = pixel_color.to_tuple(3)
 
@@ -136,12 +143,12 @@ class Scene:
             render_data.img = Image.new( 'RGB', (target_pixel_width, target_pixel_height), "black") # create a new black image
             render_data.pixels = render_data.img.load() # create the pixel map
 
-            ssaa_factor = 1.0/(self.ssaa_level*self.ssaa_level)
+            half_ssaa_level = 0.5 * self.ssaa_level
 
             for x in range(0, target_pixel_width):
                 for y in range(0, target_pixel_height):
 
-                    colors = [0,0,0]
+                    colors = [0, 0, 0]
 
                     for c in range(0, 3):
 
@@ -150,8 +157,11 @@ class Scene:
 
                         for fx in range(0, self.ssaa_level):
                             for fy in range(0, self.ssaa_level):
-                                ix = int(x*self.ssaa_level + fx - 0.5*self.ssaa_level)
-                                iy = int(y*self.ssaa_level + fy - 0.5*self.ssaa_level)
+                                ix = x * self.ssaa_level + fx - half_ssaa_level
+                                iy = y * self.ssaa_level + fy - half_ssaa_level
+
+                                ix = int(ix)
+                                iy = int(iy)
 
                                 if ix >= 0 and ix < ssaa_render_data.pixel_width and \
                                    iy >= 0 and iy < ssaa_render_data.pixel_height:
@@ -179,9 +189,9 @@ if __name__ == "__main__":
         target_scene_file = sys.argv[1]
         print('Parsing file %s' % (target_scene_file))
         objs = {
-            "cube": Cube.parse,
-            "sphere": Sphere.parse,
-            "camera": Camera.parse
+            "cube": SDFCube.parse,
+            "sphere": SDFSphere.parse,
+            "camera": Camera.parse,
         }
         target_scene = Scene()
         parser = SceneParser(objs)

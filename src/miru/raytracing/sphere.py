@@ -1,8 +1,8 @@
-from engine.transform import Transform
-from engine.vector import Vector3,Vector2
-from engine.color import Color
+from miru.engine.transform import Transform
+from miru.engine.vector import Vector3,Vector2
+from miru.engine.color import Color
 
-from engine.material import Material
+from miru.engine.material import Material
 
 import numpy as np
 
@@ -93,3 +93,5 @@ class Sphere:
             sphere.albedo = Color(color[0], color[1], color[2], color[3])
 
         return sphere
+
+        

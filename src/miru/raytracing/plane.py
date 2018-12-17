@@ -1,7 +1,7 @@
-from engine.transform import Transform
-from engine.vector import Vector3, Vector2
+from miru.engine.transform import Transform
+from miru.engine.vector import Vector3, Vector2
 
-from engine.material import Material
+from miru.engine.material import Material
 
 import numpy as np
 
