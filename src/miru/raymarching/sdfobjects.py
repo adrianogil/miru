@@ -4,6 +4,28 @@ from miru.engine.color import Color
 from miru.engine.vector import Vector3
 from miru.engine.material import Material
 
+class SDFUtils:
+
+    @staticmethod
+    # Using the gradient of the SDF, estimate the normal on
+    # the surface at point p.
+    def get_normal(distance_method, current_pos):
+        eps = 0.01
+
+        eps_x = Vector3(eps, 0.0, 0.0)
+        normal_x = distance_method(current_pos.add(eps_x))
+        normal_x = normal_x - distance_method(current_pos.minus(eps_x))
+
+        eps_y = Vector3(0.0, eps, 0.0)
+        normal_y = distance_method(current_pos.add(eps_y))
+        normal_y = normal_y - distance_method(current_pos.minus(eps_y))
+
+        eps_z = Vector3(0.0, 0.0, eps)
+        normal_z = distance_method(current_pos.add(eps_z))
+        normal_z = normal_z - distance_method(current_pos.minus(eps_z))
+
+        return Vector3(normal_x, normal_y, normal_z).normalized()
+
 
 class SDFCube:
     def __init__(self, size):
@@ -40,6 +62,8 @@ class SDFCube:
         return d
 
     def render(self, scene, interception):
+        interception['normal'] = SDFUtils.get_normal(self.distance, interception['hit_point'])
+
         if self.material is not None:
             return self.material.render(scene, interception)
 
@@ -80,6 +104,8 @@ class SDFSphere:
         return position.minus(self.transform.position).magnitude() - self.radius
 
     def render(self, scene, interception):
+        interception['normal'] = interception['hit_point'].minus(self.transform.position).normalized()
+
         if self.material is not None:
             return self.material.render(scene, interception)
 

@@ -3,6 +3,7 @@ from miru.engine.color import Color
 
 from miru.engine.vector import Vector3
 
+
 class SDFCube:
     def __init__(self, size):
         self.size = size

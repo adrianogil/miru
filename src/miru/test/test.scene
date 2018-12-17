@@ -31,7 +31,11 @@
             },
             "material":   {
                 "shader" : "lambertian",
-                "albedo" : [0.8, 0.1, 0.8, 1.0]
+                "albedo" : [0.8, 0.1, 0.8, 1.0],
+                "debug"  : {
+                    "active": "False",
+                    "render": "normal"
+                }
             }
         }
     ],
@@ -40,7 +44,7 @@
     },
     "light": {
         "transform":  {
-                "position": [-2.2, 4.0, -5.3]
+                "position": [-2.2, 4.0, -15.3]
             }
     },
     "render": {

@@ -32,6 +32,17 @@ class Vector3:
             self.z = self.z * p
             return self
 
+    def scale(self, p, cloneit=True):
+        if cloneit:
+            new_v = self.clone()
+            new_v.scale(p, False)
+            return new_v
+        else:
+            self.x = self.x * p.x
+            self.y = self.y * p.y
+            self.z = self.z * p.z
+            return self
+
     def add(self, v, cloneit=True):
         if cloneit:
             new_v = self.clone()
@@ -139,6 +150,16 @@ class Vector2:
         else:
             self.x = self.x * p
             self.y = self.y * p
+            return self
+
+    def scale(self, p, cloneit=True):
+        if cloneit:
+            new_v = self.clone()
+            new_v.scale(p, False)
+            return new_v
+        else:
+            self.x = self.x * p.x
+            self.y = self.y * p.y
             return self
 
     def add(self, v, cloneit=True):

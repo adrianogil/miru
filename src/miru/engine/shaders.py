@@ -26,14 +26,15 @@ class LambertianTintShader:
 
         if 'uv' in interception:
             uv = interception['uv']
-            if material.texture != None:
+            if material.texture is not None:
                 render_color = render_color.tint(material.texture.tex2D(uv))
 
         light_direction = light.transform.position.minus(interception['hit_point']).normalized()
-        dotNL = light_direction.dot_product(interception['normal'])
-        # print("Dot light and normal: " + str(dotNL))
-        rgb_value = render_color.rgb().multiply(max(0.0, dotNL))
+        dotNL = max(interception['normal'].dot_product(light_direction), 0.0)
+        print("Dot light and normal: " + str(dotNL))
+        rgb_value = render_color.rgb().multiply(dotNL)
         rgb_value = rgb_value.multiply(light.intensity)
+        rgb_value = rgb_value.scale(light.color.rgb())
         render_color.set_rgb(rgb_value)
 
         return render_color
