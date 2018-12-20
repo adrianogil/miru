@@ -1,7 +1,7 @@
 
 if [ -z "$MIRU_PYTHON_PATH" ]
 then
-    export MIRU_PYTHON_PATH=$MIRU_PROJ_PATH/
+    export MIRU_PYTHON_PATH=$MIRU_PROJ_PATH/python/
     export PYTHONPATH=$MIRU_PYTHON_PATH:$PYTHONPATH
 fi
 
