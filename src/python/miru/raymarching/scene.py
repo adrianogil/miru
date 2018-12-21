@@ -71,6 +71,7 @@ class Scene:
                 distance = o.distance(position)
                 if distance < self.min_marching_distance:
                     pixel_color = o.render(self, {"hit_point": position})
+                    find_surface = True
                     break
                 if distance < min_distance:
                     min_distance = distance

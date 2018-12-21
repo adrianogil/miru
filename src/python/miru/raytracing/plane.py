@@ -41,7 +41,7 @@ class Plane:
         return self.albedo
 
     def intercepts(self, ray):
-        
+
         points = self.points
 
         # https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
@@ -74,4 +74,4 @@ class Plane:
 
                 return {'result': True, 'hit_point': intersection_point, 'normal' : None, 'uv' : Vector2.zero}
 
-        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} 
+        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
