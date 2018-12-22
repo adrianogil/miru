@@ -1,4 +1,3 @@
-#include <iostream>
 #include "vector.h"
 
 using namespace std;
@@ -20,10 +19,12 @@ int main()
     a.z = 5.2;
 
     Vector3f b(2.0, 3.2, 5.3);
+    Vector3f c(0.0, 9.7, 0.25);
 
     cout << "Test:" << endl;
     printVector(a);
     printVector(b);
+    cout << c << endl;
 
     return 0;
 }
