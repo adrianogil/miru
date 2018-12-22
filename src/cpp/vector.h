@@ -55,9 +55,20 @@ public:
         return Vector3(new_x, new_y, new_z);
     }
 
+    friend Vector3 operator+(const Vector3 &a, const Vector3 &b);
+    friend Vector3 operator-(const Vector3 &a, const Vector3 &b);
+
+    static Vector3 zero() { return Vector3(T(0), T(0), T(0)); }
+    static Vector3 one() { return Vector3(T(1), T(1), T(1)); }
+
     T x, y, z;
 };
 
-typedef Vector3<float> Vector3f;
 
+typedef Vector3<float> Vector3f;
+// Vector3f::zero = Vector3f(0,0,0);
+// Vector3f::one = Vector3f(1.0, 1.0, 1.0);
+
+Vector3f operator+(const Vector3f &a, const Vector3f &b);
+Vector3f operator-(const Vector3f &a, const Vector3f &b);
 std::ostream& operator<<(std::ostream &strm, const Vector3f &v);

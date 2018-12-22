@@ -25,6 +25,9 @@ int main()
     printVector(a);
     printVector(b);
     cout << c << endl;
+    cout << a + b << endl;
+    cout << b - a << endl;
+    cout << Vector3f::one().multiply(3.2) << endl;
 
     return 0;
 }
