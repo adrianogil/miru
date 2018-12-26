@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "matrix.h"
+#include "miru/engine/matrix.h"
 
 using namespace std;
 

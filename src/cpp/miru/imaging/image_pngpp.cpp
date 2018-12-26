@@ -1,8 +1,9 @@
 #include <string> 
 #include <png++/png.hpp>
 
+#include "miru/imaging/image.h"
 
-int main()
+void sample_image_generation_for_dependency_test()
 {
     //... Added sample from http://www.nongnu.org/pngpp/doc/0.2.9/
     png::image< png::rgb_pixel > image(128, 128);
