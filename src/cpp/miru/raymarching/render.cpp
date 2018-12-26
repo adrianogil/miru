@@ -6,5 +6,7 @@
 
 Color RaymarchingRender::render(const Scene* scene, uint32_t x, uint32_t y)
 {
-    return Color(1.0, 0.0, 0.0, 1.0);   
+    SceneGraph* 
+
+    return Color(1.0, 0.0, 0.0, 1.0);
 } 

@@ -1,3 +1,6 @@
+#ifndef VECTOR_INCLUDED
+#define VECTOR_INCLUDED
+
 #include <iostream>
 #include <cmath>
 
@@ -116,3 +119,5 @@ typedef Vector3<float> Vector3f;
 Vector3f operator+(const Vector3f &a, const Vector3f &b);
 Vector3f operator-(const Vector3f &a, const Vector3f &b);
 std::ostream& operator<<(std::ostream &strm, const Vector3f &v);
+
+#endif
