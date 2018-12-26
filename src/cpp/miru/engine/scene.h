@@ -1,10 +1,15 @@
 #include "miru/basic/definitions.h"
 
 // Forward Declaration
-struct SceneGraph;
 class SceneObject;
 class SceneRender;
 class Color;
+
+struct SceneGraph
+{
+    SceneObject* object;
+    SceneGraph* nextObject;
+};
 
 class Scene
 {
@@ -12,6 +17,8 @@ public:
     Scene();
     void addObject(SceneObject *obj);
     void render(const char *filename) const;
+
+    SceneGraph* GetObjectList() { return mObjectList; }
 
     SceneRender *renderMethod;
     Color backgroundColor;

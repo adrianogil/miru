@@ -7,12 +7,6 @@
 #include "miru/imaging/image.h"
 #include "miru/basic/definitions.h"
 
-struct SceneGraph
-{
-    SceneObject* object;
-    SceneGraph* nextObject;
-};
-
 Scene::Scene()
 {
     this->mObjectList = NULL;
