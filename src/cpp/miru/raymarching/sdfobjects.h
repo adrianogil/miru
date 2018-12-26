@@ -1,7 +1,6 @@
 #include "miru/engine/vector.h"
+#include "miru/engine/sceneobject.h"
 
-class SceneObject;
-class Transform;
 class Material;
 class Color;
 

@@ -19,9 +19,9 @@ public:
     Vector3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
     Vector3(const Vector3 &v) : x(v.x), y(v.y), z(v.z) {}
 
-    Vector3& clone()
+    Vector3 clone()
     {
-        return Vector3(this);
+        return Vector3(*this);
     }
 
     Vector3 multiply(T factor)
@@ -51,7 +51,7 @@ public:
 
     Vector3 normalized()
     {
-        return clone()->multiply(1/this->sqrMagnitude());
+        return clone().multiply(1/this->magnitude());
     }
 
     T dotProduct(const Vector3 &v)

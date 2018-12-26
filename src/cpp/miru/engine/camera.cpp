@@ -1,14 +1,22 @@
+#include "miru/engine/transform.h"
 #include "miru/engine/sceneobject.h"
+#include "miru/engine/color.h"
 #include "miru/engine/scene.h"
 #include "miru/engine/scenerender.h"
-#include "miru/engine/color.h"
 #include "miru/engine/camera.h"
 
 #include "miru/imaging/image.h"
 
-Camera::Camera() : public SceneObject()
+Camera::Camera() : SceneObject()
 {
 
+}
+
+Camera::Camera(Camera &camera) : SceneObject(camera)
+{
+    this->near = camera.near;
+    this->far = camera.far;
+    this->fov = camera.fov;
 }
 
 void Camera::render(Scene* scene, 
@@ -16,7 +24,7 @@ void Camera::render(Scene* scene,
                     uint32_t targetRenderHeight, 
                     const char* targetRenderFile)
 {
-    scene->renderMethod->setupFrame(this, scene, targetRenderWidth, targetRenderHeight);
+    scene->renderMethod->setupFrame(scene, *this, targetRenderWidth, targetRenderHeight);
 
     Image* rendered = new Image(targetRenderWidth, targetRenderHeight);
 

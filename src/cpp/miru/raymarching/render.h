@@ -14,5 +14,5 @@ public:
     virtual void setupFrame(const Scene* scene, Camera &camera, uint32_t targetRenderWidth, uint32_t targetRenderHeight) override;
     virtual Color render(const Scene *scene, uint32_t x, uint32_t y) override;
 private:
-    const Camera* mTargetCamera;
+    Camera* mTargetCamera;
 };

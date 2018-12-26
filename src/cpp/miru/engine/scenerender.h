@@ -9,7 +9,7 @@ class SceneRender
 {   
 public:
     SceneRender() {}
-    virtual void setupFrame(const Scene* scene, const Camera *camera, uint32_t targetRenderWidth, 
+    virtual void setupFrame(const Scene* scene, Camera &camera, uint32_t targetRenderWidth, 
                     uint32_t targetRenderHeight);
     virtual Color render(const Scene* scene, uint32_t x, uint32_t y);
 protected:

@@ -1,9 +1,10 @@
 #include "miru/engine/scenerender.h"
-#include "miru/engine/scene.h"
+#include "miru/engine/sceneobject.h"
 #include "miru/engine/color.h"
+#include "miru/engine/scene.h"
 #include "miru/engine/camera.h"
 
-void SceneRender::setupFrame(const Scene* scene, const Camera *camera, uint32_t targetRenderWidth, 
+void SceneRender::setupFrame(const Scene* scene, Camera &camera, uint32_t targetRenderWidth, 
                     uint32_t targetRenderHeight)
 {
     mTargetRenderWidth = targetRenderWidth;

@@ -1,8 +1,8 @@
+#include "miru/raymarching/sdfobjects.h"
+
 #include "miru/engine/color.h"
 #include "miru/engine/transform.h"
 #include "miru/engine/material.h"
-#include "miru/engine/sceneobject.h"
-#include "miru/raymarching/sdfobjects.h"
 
 SDFObject::SDFObject() : SceneObject()
 {
@@ -21,5 +21,5 @@ Color SDFObject::render(Vector3f position)
 
 float SDFSphere::distance(Vector3f position)
 {
-    return (position - transform()->position()).magnitude();
+    return (position - transform()->position()).magnitude() - this->radius;
 }

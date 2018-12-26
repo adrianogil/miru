@@ -4,6 +4,7 @@ class Transform
 {
 public:
     Transform();
+    Transform(Transform &transform);
 
     Vector3f position();
 
