@@ -51,7 +51,7 @@ public:
 
     Vector3 normalized()
     {
-        return this->multiply(1/this->sqrMagnitude()).clone();
+        return clone()->multiply(1/this->sqrMagnitude());
     }
 
     T dotProduct(const Vector3 &v)

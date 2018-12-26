@@ -4,7 +4,7 @@ class Color;
 class Material
 {
 public:
-    Material() {}
+    Material();
 
     Color render() { return albedo; }
 

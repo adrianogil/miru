@@ -13,7 +13,6 @@ public:
     virtual float distance(Vector3f position);
     virtual Color render(Vector3f position);
 
-    Transform* transform;
     Material* material;
 };
 

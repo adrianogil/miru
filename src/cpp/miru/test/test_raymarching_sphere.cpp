@@ -6,6 +6,8 @@
 #include "miru/raymarching/render.h"
 #include "miru/raymarching/sdfobjects.h"
 
+#include "miru/engine/camera.h"
+
  int main()
  {
     Scene *scene = new Scene();
@@ -18,7 +20,13 @@
     scene->addObject(sphere);
 
     const char* filename = "scene.png";
-    scene->render(filename);
+    
+    Camera* camera = new Camera();
+    camera->near = 0.2;
+    camera->far = 100;
+    camera->fov = 60;
 
+    camera->render(scene, 1024, 1024, filename);
+    
     delete(scene);
  }

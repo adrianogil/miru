@@ -27,21 +27,3 @@ void Scene::addObject(SceneObject* obj)
         lastObj->nextObject = NULL;
     }
 }
-
-void Scene::render(const char* targetRenderFile) const
-{
-    Image* rendered = new Image(targetRenderWidth, targetRenderHeight);
-
-    for (uint32_t y = 0; y < rendered->getHeight(); ++y)
-    {
-        for (uint32_t x = 0; x < rendered->getWidth(); ++x)
-        {
-            Color pixelColor = this->renderMethod->render(this, x, y);
-            rendered->setPixel(x, y, pixelColor);
-        }
-    }
-    
-    rendered->saveAsPNG(targetRenderFile);
-
-    delete(rendered);
-}

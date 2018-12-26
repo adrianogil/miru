@@ -1,6 +1,13 @@
+// Forward Declaration
+class Transform;
 
 class SceneObject
 {
 public:
-    SceneObject() {}
+    SceneObject();
+
+    Transform* transform() const;
+
+private:
+    Transform* mTransform;
 };

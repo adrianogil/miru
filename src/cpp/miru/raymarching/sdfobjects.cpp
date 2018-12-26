@@ -6,7 +6,6 @@
 
 SDFObject::SDFObject() : SceneObject()
 {
-    this->transform = new Transform();
     this->material = new Material();
 }
 
@@ -22,5 +21,5 @@ Color SDFObject::render(Vector3f position)
 
 float SDFSphere::distance(Vector3f position)
 {
-    return (position - transform->position()).magnitude();
+    return (position - transform()->position()).magnitude();
 }
