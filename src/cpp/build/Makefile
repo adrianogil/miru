@@ -21,6 +21,9 @@ build-test-scene:
 	g++ -c $(cpp_flags) $(miru_path)/imaging/*.cpp $(miru_path)/engine/*.cpp $(miru_path)/test/test_scene.cpp $(miru_includes)
 	g++ -o test_scene *.o $(png_libconfig)
 
+build-test-raymarching:
+	g++ -c $(cpp_flags) $(miru_path)/raymarching/*.cpp $(miru_path)/imaging/*.cpp $(miru_path)/engine/*.cpp $(miru_path)/test/test_raymarching_sphere.cpp $(miru_includes)
+	g++ -o test_raymarching_sphere *.o $(png_libconfig)	
 
 clean: clean-objs clean-tests
 

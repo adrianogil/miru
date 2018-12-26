@@ -3,6 +3,7 @@
 // Forward Declaration
 struct SceneGraph;
 class SceneObject;
+class SceneRender;
 class Color;
 
 class Scene
@@ -12,6 +13,7 @@ public:
     void addObject(SceneObject *obj);
     void render(const char *filename) const;
 
+    SceneRender *renderMethod;
     Color backgroundColor;
 
     uint32_t targetRenderWidth = 1024;

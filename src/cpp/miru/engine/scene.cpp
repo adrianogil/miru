@@ -1,6 +1,7 @@
 #include "miru/engine/color.h"
 
 #include "miru/engine/scene.h"
+#include "miru/engine/scenerender.h"
 #include "miru/engine/sceneobject.h"
 
 #include "miru/imaging/image.h"
@@ -41,7 +42,8 @@ void Scene::render(const char* targetRenderFile) const
     {
         for (uint32_t x = 0; x < rendered->getWidth(); ++x)
         {
-            rendered->setPixel(x, y, backgroundColor);
+            Color pixelColor = this->renderMethod->render(this, x, y);
+            rendered->setPixel(x, y, pixelColor);
         }
     }
     

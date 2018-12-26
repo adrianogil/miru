@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include "miru/basic/definitions.h"
 
 class Color
 {
