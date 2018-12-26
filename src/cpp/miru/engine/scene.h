@@ -4,6 +4,7 @@
 class SceneObject;
 class SceneRender;
 class Color;
+class Light;
 
 struct SceneGraph
 {
@@ -21,6 +22,9 @@ public:
 
     SceneRender *renderMethod;
     Color backgroundColor;
+
+    // Fow now, there is one light for each scene
+    Light* light = NULL;
 private:
     SceneGraph *mObjectList;
 };

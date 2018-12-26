@@ -1,6 +1,7 @@
 #include "miru/engine/color.h"
 
 #include "miru/engine/scene.h"
+#include "miru/engine/light.h"
 #include "miru/engine/scenerender.h"
 #include "miru/engine/sceneobject.h"
 

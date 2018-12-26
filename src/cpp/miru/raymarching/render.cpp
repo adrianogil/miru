@@ -3,6 +3,7 @@
 #include "miru/engine/transform.h"
 #include "miru/engine/scene.h"
 #include "miru/engine/camera.h"
+#include "miru/engine/material.h"
 #include "miru/engine/scenerender.h"
 
 #include "miru/raymarching/render.h"
@@ -71,6 +72,14 @@ Color RaymarchingRender::render(const Scene* scene, uint32_t x, uint32_t y)
 
                 if (distance < MIN_MARCHING_DISTANCE)
                 {
+                    LambertianShader* shader = (LambertianShader*) sdfObject->material->shader;
+
+                    if (shader != 0)
+                    {
+                        shader->hitPointPosition = position;
+                        shader->normal = sdfObject->getNormalAt(position);
+                    }
+
                     pixelColor = sdfObject->render(position);
                     findSurface = 1;
 

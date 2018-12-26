@@ -11,6 +11,7 @@ public:
 
     virtual float distance(Vector3f position);
     virtual Color render(Vector3f position);
+    Vector3f getNormalAt(Vector3f position);
 
     Material* material;
 };
