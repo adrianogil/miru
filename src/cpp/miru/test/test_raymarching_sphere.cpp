@@ -14,12 +14,12 @@
  int main()
  {
     Scene *scene = new Scene();
-    scene->backgroundColor = Color(0.0, 0.0, 0.0, 1.0);
+    scene->backgroundColor = Color(0.15, 0.05, 0.05, 1.0);
     
     scene->renderMethod = new RaymarchingRender();
 
     SDFSphere* sphere = new SDFSphere();
-    sphere->material->albedo = Color(1.0, 0.0, 0.0, 1.0);
+    sphere->material->albedo = Color(1.0, 0.05, 0.01, 1.0);
 
     LambertianShader* lambertian = new LambertianShader();
     lambertian->material = sphere->material;
@@ -27,7 +27,7 @@
     sphere->material->shader = lambertian;
     sphere->radius = 1.2f;
 
-    sphere->transform()->localPosition = Vector3f(0.5, 0.2, 4.0);
+    sphere->transform()->localPosition = Vector3f(0.2, 0.2, 4.5);
 
     scene->addObject(sphere);
 

@@ -1,6 +1,8 @@
 cpp_flags = -std=c++0x
 miru_path = ../miru/
-miru_includes = -I../
+lodepng_path = ../dependencies/lodepng
+miru_includes = -I../ -I../dependencies/
+lodepng_includes=-
 png_libconfig = `libpng-config --ldflags` 
 
 build-tests: build-test-vector build-test-matrix build-test-image build-test-scene
@@ -21,9 +23,15 @@ build-test-scene:
 	g++ -c $(cpp_flags) $(miru_path)/imaging/*.cpp $(miru_path)/engine/*.cpp $(miru_path)/test/test_scene.cpp $(miru_includes)
 	g++ -o test_scene *.o $(png_libconfig)
 
-build-test-raymarching:
-	g++ -c $(cpp_flags) $(miru_path)/engine/*.cpp $(miru_path)/raymarching/*.cpp $(miru_path)/imaging/*.cpp $(miru_path)/test/test_raymarching_sphere.cpp $(miru_includes)
+build-test-raymarching: build-image-lodepng
+	g++ -c $(cpp_flags) $(miru_path)/engine/*.cpp $(miru_path)/raymarching/*.cpp $(miru_path)/test/test_raymarching_sphere.cpp $(miru_includes)
 	g++ -o test_raymarching_sphere *.o $(png_libconfig)	
+
+build-image-pngpp:
+	g++ -c  $(cpp_flags) $(miru_includes) $(miru_path)/imaging/image_pngpp.cpp
+
+build-image-lodepng:
+	g++ -c  $(cpp_flags) $(miru_includes) $(miru_path)/imaging/image_lodepng.cpp $(lodepng_path)/lodepng.cpp
 
 clean: clean-objs clean-tests
 

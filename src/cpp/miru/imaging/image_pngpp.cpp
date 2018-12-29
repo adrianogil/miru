@@ -1,25 +1,35 @@
-#include "miru/imaging/image.h"
-#include "miru/engine/color.h"
+#include <string> 
+#include <png++/png.hpp>
 #include <stdint.h>
 
-Image::Image(uint32_t width, uint32_t height)
+#include "miru/imaging/image.h"
+#include "miru/engine/color.h"
+
+
+struct ImageData
+{
+    png::image< png::rgb_pixel > *pngImage;
+};
+
+Image::Image(int width, int height)
 {
     this->mWidth = width;
     this->mHeight = height;
 
-    this->mImageData = new png::image< png::rgb_pixel >((png::uint_32) this->mWidth, (png::uint_32)this->mHeight);
+    this->mImageData = new ImageData();
+    this->mImageData->pngImage = new png::image< png::rgb_pixel >((png::uint_32) this->mWidth, (png::uint_32)this->mHeight);
 }
 
-void Image::setPixel(uint32_t x, uint32_t y, const Color& color)
+void Image::setPixel(int x, int y, const Color& color)
 {
     png::uint_32 px = (png::uint_32) x;
     png::uint_32 py = (png::uint_32) y;
-    this->mImageData->set_pixel(px,py,png::rgb_pixel((png::byte)color.ru(), (png::byte)color.gu(), (png::byte)color.bu()));
+    this->mImageData->pngImage->set_pixel(px,py,png::rgb_pixel((png::byte)color.ru(), (png::byte)color.gu(), (png::byte)color.bu()));
 }
 
 void Image::saveAsPNG(const char *filename)
 {
-    this->mImageData->write(filename);
+    this->mImageData->pngImage->write(filename);
 }
 
 void sample_image_generation_for_dependency_test()

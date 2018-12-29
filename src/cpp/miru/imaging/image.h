@@ -1,24 +1,22 @@
-#include <string> 
-#include <png++/png.hpp>
-
 // Forward Declaration
+struct ImageData;
 class Color;
 
 class Image
 {
 public:
-    Image(uint32_t width, uint32_t height);
+    Image(int width, int height);
 
-    uint32_t getWidth() { return this->mWidth; }
-    uint32_t getHeight() { return this->mHeight; }
+    int getWidth() { return this->mWidth; }
+    int getHeight() { return this->mHeight; }
 
-    void setPixel(uint32_t x, uint32_t y, const Color& color);
+    void setPixel(int x, int y, const Color& color);
     void saveAsPNG(const char* filename);
 private:
-    uint32_t mWidth;
-    uint32_t mHeight;
+    int mWidth;
+    int mHeight;
 
-    png::image< png::rgb_pixel > *mImageData;
+    ImageData* mImageData;
 };
 
 void sample_image_generation_for_dependency_test();
