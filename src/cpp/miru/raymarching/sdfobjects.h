@@ -25,3 +25,13 @@ public:
 
     float radius;
 };
+
+class SDFCube : public SDFObject
+{
+public:
+    SDFCube() : SDFObject() {}
+
+    virtual float distance(Vector3f position) override;
+
+    Vector3f size;
+};
