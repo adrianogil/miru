@@ -4,6 +4,8 @@
 #include "miru/engine/transform.h"
 #include "miru/engine/material.h"
 
+#include <cmath>
+
 SDFObject::SDFObject() : SceneObject()
 {
     this->material = new Material();
@@ -41,4 +43,27 @@ Vector3f SDFObject::getNormalAt(Vector3f position)
 float SDFSphere::distance(Vector3f position)
 {
     return (position - transform()->position()).magnitude() - this->radius;
+}
+
+float SDFCube::distance(Vector3f position)
+{
+    float x = fmax(
+            position.x - this->mTransform->position().x - this->size.x / 2.0,
+            this->mTransform->position().x - position.x - this->size.x / 2.0
+            );
+
+    float y = fmax(
+            position.y - this->mTransform->position().y - this->size.y / 2.0,
+            this->mTransform->position().y - position.y - this->size.y / 2.0
+            );
+
+    float z = fmax(
+            position.z - this->mTransform->position().z - this->size.z / 2.0,
+            this->mTransform->position().z - position.z - this->size.z / 2.0
+            );
+
+    float d = fmax(x, y);
+    d = fmax(d, z);
+
+    return d;
 }

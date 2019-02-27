@@ -23,9 +23,13 @@ build-test-scene:
 	g++ -c $(cpp_flags) $(miru_path)/imaging/*.cpp $(miru_path)/engine/*.cpp $(miru_path)/test/test_scene.cpp $(miru_includes)
 	g++ -o test_scene *.o $(png_libconfig)
 
-build-test-raymarching: build-image-lodepng
+build-test-raymarching-sphere: build-image-lodepng
 	g++ -c $(cpp_flags) $(miru_path)/engine/*.cpp $(miru_path)/raymarching/*.cpp $(miru_path)/test/test_raymarching_sphere.cpp $(miru_includes)
 	g++ -o test_raymarching_sphere *.o $(png_libconfig)	
+
+build-test-raymarching: build-image-lodepng
+	g++ -c $(cpp_flags) $(miru_path)/engine/*.cpp $(miru_path)/raymarching/*.cpp $(miru_path)/test/test_raymarching.cpp $(miru_includes)
+	g++ -o test_raymarching *.o $(png_libconfig)	
 
 build-image-pngpp:
 	g++ -c  $(cpp_flags) $(miru_includes) $(miru_path)/imaging/image_pngpp.cpp

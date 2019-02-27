@@ -26,6 +26,14 @@ function miru-raymarching-cpp()
     target_scene_file=$1
     target_render_image=$2
 
+    $MIRU_PROJ_PATH/cpp/build/test_raymarching
+}
+
+function miru-raymarching-sphere-cpp()
+{
+    target_scene_file=$1
+    target_render_image=$2
+
     $MIRU_PROJ_PATH/cpp/build/test_raymarching_sphere
 }
 
@@ -38,6 +46,18 @@ function miru-raymarching-cpp-build()
     cd $MIRU_PROJ_PATH/cpp/build/
     make clean
     make build-test-raymarching
+    cd $current_dir
+}
+
+function miru-raymarching-spheres-cpp-build()
+{
+    target_scene_file=$1
+    target_render_image=$2
+
+    current_dir=$PWD
+    cd $MIRU_PROJ_PATH/cpp/build/
+    make clean
+    make build-test-raymarching-sphere
     cd $current_dir
 }
 
