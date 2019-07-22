@@ -67,3 +67,18 @@ function miru-raymarching-cubes()
 {
     python2 -m miru.raymarching.scenes.cubes
 }
+
+
+function miru-wknd-build()
+{
+    current_dir=$PWD
+    cd $MIRU_PROJ_PATH/cpp/build/
+    make clean
+    make build-wknd
+    cd $current_dir
+}
+
+function miru-wknd-ppm()
+{
+    $MIRU_PROJ_PATH/cpp/build/test_wknd_ppm
+}
