@@ -1,8 +1,13 @@
 cpp_flags = -std=c++0x
+
 miru_path = ../miru/
 lodepng_path = ../dependencies/lodepng
+oneweekend_path=$(miru_path)/oneweekend/
+
 miru_includes = -I../ -I../dependencies/
 lodepng_includes=-
+oneweekend_includes=-I${oneweekend_path}
+
 png_libconfig = `libpng-config --ldflags`
 
 build-tests: build-test-vector build-test-matrix build-test-image build-test-scene
@@ -38,7 +43,7 @@ build-image-lodepng:
 	g++ -c  $(cpp_flags) $(miru_includes) $(miru_path)/imaging/image_lodepng.cpp $(lodepng_path)/lodepng.cpp
 
 build-wknd:
-	g++ -c $(miru_path)/oneweekend/test_ppm.cpp
+	g++ -c ${oneweekend_path}/test_ppm.cpp ${oneweekend_includes}
 	g++ -o test_wknd_ppm test_ppm.o
 
 clean: clean-objs clean-tests
