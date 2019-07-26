@@ -45,6 +45,8 @@ build-image-lodepng:
 build-wknd:
 	g++ -c ${oneweekend_path}/test_ppm.cpp ${oneweekend_includes}
 	g++ -o test_wknd_ppm test_ppm.o
+	g++ -c ${oneweekend_path}/main.cpp ${oneweekend_includes}
+	g++ -o main main.o
 
 clean: clean-objs clean-tests
 

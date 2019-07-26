@@ -82,3 +82,8 @@ function miru-wknd-ppm()
 {
     $MIRU_PROJ_PATH/cpp/build/test_wknd_ppm
 }
+
+function miru-wknd()
+{
+    $MIRU_PROJ_PATH/cpp/build/main
+}
