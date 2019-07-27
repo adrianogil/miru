@@ -1,33 +1,21 @@
 #include <iostream>
-#include "ray.h"
+#include "sphere.h"
+#include "hitablelist.h"
+#include "float.h"
 
-float hit_sphere(const vec3& center, float radius, const ray& r)
+
+vec3 color(const ray& r, hitable *world)
 {
-    vec3 oc = r.origin() - center;
-    float a = dot(r.direction(), r.direction());
-    float b = 2.0 * dot(oc, r.direction());
-    float c = dot(oc, oc) - radius * radius;
-    float discriminant = b * b - 4 * a * c;
+    hit_record rec;
 
-    if (discriminant < 0)
+    if (world->hit(r, 0.0, MAXFLOAT, rec))
     {
-        return -1.0;
-    } else {
-        return (-b - sqrt(discriminant)) / (2.0 * a);
-    }
-}
-
-vec3 color(const ray& r)
-{
-    float t = hit_sphere(vec3(0,0,-1), 0.5, r);
-    // return vec3(t, 0, 0);
-    if (t > 0.0)
-    {
-        vec3 N = unit_vector(r.point_at(t) - vec3(0, 0, -1));
-        return 0.5 * (N + 1.0);
+        return 0.5 * (rec.normal + 1.0);
+        // Show only a red color
+        // return vec3(1, 0, 0);
     }
     vec3 unit_direction = unit_vector(r.direction());
-    t = 0.5 * (unit_direction.y() + 1.0);
+    float t = 0.5 * (unit_direction.y() + 1.0);
 
     return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
 }
@@ -45,6 +33,13 @@ int main()
     vec3 vertical(0.0, 2.0, 0.0);
     vec3 origin(0.0, 0.0, 0.0);
 
+    int obj_list_size = 1;
+    hitable *list[obj_list_size];
+    list[0] = new sphere(vec3(0, 0, -1), 0.5);
+    // list[1] = new sphere(vec3(0, -100.5, -1), 100);
+
+    hitable *world = new hitable_list(list, obj_list_size);
+
     for (int y = ny - 1; y >= 0; y--)
     {
         for (int x = 0; x < nx; x++)
@@ -53,7 +48,7 @@ int main()
             float v = float(y) / float(ny);
 
             ray r(origin, lower_left_corner + u * horizontal + v * vertical);
-            vec3 col = color(r);
+            vec3 col = color(r, world);
 
             int ir = int(255.99 * col[0]);
             int ig = int(255.99 * col[1]);

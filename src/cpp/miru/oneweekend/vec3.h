@@ -52,6 +52,10 @@ inline vec3 operator/(const vec3 &v1, const vec3 &v2) {
     return vec3(v1.e[0] / v2.e[0], v1.e[1] / v2.e[1], v1.e[2] / v2.e[2]);
 }
 
+inline vec3 operator/(const vec3 &v1, const float f) {
+    return vec3(v1.e[0] / f, v1.e[1] / f, v1.e[2] / f);
+}
+
 inline vec3 operator+(const vec3 &v1, float f) {
     return vec3(v1.e[0] + f, v1.e[1] + f, v1.e[2] + f);
 }
