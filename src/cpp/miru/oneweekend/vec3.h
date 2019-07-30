@@ -101,4 +101,21 @@ inline vec3 unit_vector(vec3 v) {
     return vec3(v.e[0] / len, v.e[1] / len, v.e[2] / len);
 }
 
+vec3 random_in_unit_sphere()
+{
+    vec3 p;
+    do
+    {
+        p = 2.0 * get_random_vec3() - get_vec3_one();
+
+    } while(dot(p,p) >= 1.0);
+
+    return p;
+}
+
+vec3 reflect(const vec3& v, const vec3& n)
+{
+    return v - 2 * dot(v, n) * n;
+}
+
 #endif
