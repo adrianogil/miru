@@ -1,0 +1,33 @@
+{
+    "objects":[
+        {
+            "type"     :  "sphere",
+            "radius"   :  1.6,
+            "transform":  {
+                "position": [-0.5, -1.2, 8.2],
+                "scale"   : [1, 1.5, 1]
+            },
+            "material":   {
+                "shader" : "lambertian",
+                "albedo" : [0.8, 0.1, 0.8, 1.0],
+                "debug"  : {
+                    "active": "False",
+                    "render": "normal"
+                }
+            }
+        }
+    ],
+    "camera": {
+        "fov" :           60
+    },
+    "light": {
+        "transform":  {
+                "position": [-2.2, 4.0, -15.3]
+            }
+    },
+    "render": {
+        "height"    : 200,
+        "width"     : 200,
+        "to_image"  : "test.png"
+    }
+}
