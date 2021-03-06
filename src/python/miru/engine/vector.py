@@ -1,13 +1,45 @@
 import numpy as np
 
+
 class Vector3:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+    def __init__(self, x=None, y=None, z=None, array_data=None):
+        self.values = np.zeros((3,))
+
+        if array_data is not None:
+            self.values = array_data.copy()
+        if x is not None:
+            self.x = x
+        if y is not None:
+            self.y = y
+        if z is not None:
+            self.z = z
+
+    @property
+    def x(self):
+        return float(self.values[0])
+
+    @x.setter
+    def x(self, new_x):
+        self.values[0] = new_x
+
+    @property
+    def y(self):
+        return float(self.values[1])
+
+    @y.setter
+    def y(self, new_y):
+        self.values[1] = new_y
+
+    @property
+    def z(self):
+        return float(self.values[2])
+
+    @z.setter
+    def z(self, new_z):
+        self.values[2] = new_z
 
     def value(self):
-        return [[self.x],[self.y],[self.z]]
+        return self.values.reshape(3, 1)
 
     def homo_value(self):
         return [[self.x],[self.y],[self.z],[1]]
@@ -27,20 +59,19 @@ class Vector3:
             new_v.multiply(p, False)
             return new_v
         else:
-            self.x = self.x * p
-            self.y = self.y * p
-            self.z = self.z * p
+            self.values *= p
             return self
 
-    def scale(self, p, cloneit=True):
+    def scale(self, v, cloneit=True):
         if cloneit:
             new_v = self.clone()
-            new_v.scale(p, False)
+            new_v.scale(v, False)
             return new_v
         else:
-            self.x = self.x * p.x
-            self.y = self.y * p.y
-            self.z = self.z * p.z
+            if v.__class__ == Vector3:
+                self.values *= v.values
+            else:
+                self.values *= v
             return self
 
     def add(self, v, cloneit=True):
@@ -49,9 +80,10 @@ class Vector3:
             new_v.add(v, False)
             return new_v
         else:
-            self.x = self.x + v.x
-            self.y = self.y + v.y
-            self.z = self.z + v.z
+            if v.__class__ == Vector3:
+                self.values += v.values
+            else:
+                self.values += v
             return self
 
     def minus(self, v, cloneit=True):
@@ -60,11 +92,14 @@ class Vector3:
             new_v.minus(v, False)
             return new_v
         else:
-            self.add(v.clone().multiply(-1), False)
+            if v.__class__ == Vector3:
+                self.values -= v.values
+            else:
+                self.values -= v
             return self
 
     def magnitude(self):
-        return np.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
+        return np.linalg.norm(self.values)
 
     def normalized(self, cloneit=True):
         if cloneit:
@@ -72,11 +107,14 @@ class Vector3:
             new_v.normalized(False)
             return new_v
         else:
-            self.multiply(1.0/self.magnitude(), False)
+            normalization_factor = np.linalg.norm(self.values)
+            if normalization_factor == 0:
+                normalization_factor = np.finfo(self.values.dtype).eps
+            self.values = self.values / normalization_factor
             return self
 
     def dot_product(self, v):
-        dot_value = self.x*v.x + self.y*v.y + self.z*v.z
+        dot_value = self.values.transpose().dot(v.values).flatten()[0]
         return dot_value
 
     # def scalar_cross_product(self, v1, v2, cloneit=True)

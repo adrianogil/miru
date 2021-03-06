@@ -1,5 +1,5 @@
-from transform import Transform
-from color import Color
+from .transform import Transform
+from .color import Color
 
 
 class Light:

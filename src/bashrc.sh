@@ -10,7 +10,7 @@ function miru-raytracing()
     target_scene_file=$1
     target_render_image=$2
 
-    python2 -m miru.raytracing.scene $target_scene_file $target_render_image
+    python3 -m miru.raytracing.scene $target_scene_file $target_render_image
 }
 
 function miru-raymarching-py()

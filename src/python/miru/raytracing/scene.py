@@ -1,5 +1,5 @@
 from PIL import Image
-from ray import Ray
+from .ray import Ray
 
 import numpy as np
 

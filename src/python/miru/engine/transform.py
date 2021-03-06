@@ -1,8 +1,7 @@
-from vector import Vector3
+from . import transformutils as t_utils
+from .vector import Vector3
 
 import numpy as np
-
-import transformutils as t_utils
 
 
 class Transform:
