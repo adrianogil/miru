@@ -7,7 +7,7 @@ Simple raytracing, to run you should type:
 ```bash
 python simpleraytracing/test.py
 ```
-![Rendered image](https://raw.githubusercontent.com/adrianogil/miru/master/examples/raytracing_pymiru.png)
+![Rendered image](https://raw.githubusercontent.com/adrianogil/miru/main/examples/raytracing_pymiru.png)
 
 
 ## Rendering experiments using CPP
@@ -20,7 +20,7 @@ On MacOS install:
 brew install png++
 ```
 
-![Rendered image](https://raw.githubusercontent.com/adrianogil/miru/master/examples/raymarching_cpp_sphere.png )
+![Rendered image](https://raw.githubusercontent.com/adrianogil/miru/main/examples/raymarching_cpp_sphere.png )
 
 
 ## Planned features
