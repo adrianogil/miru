@@ -13,6 +13,14 @@ function miru-raytracing()
     python3 -m miru.raytracing.scene $target_scene_file $target_render_image
 }
 
+function miru-raytracing-tests()
+{
+    target_scene_file=$1
+    target_render_image=$2
+
+    python3 -m miru.raytracing.scenetests
+}
+
 function miru-raymarching-py()
 {
     target_scene_file=$1

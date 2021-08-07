@@ -1,5 +1,6 @@
 {
-    "objects":[
+    "objects":
+    [
         {
             "type"     :  "sphere",
             "radius"   :  1.6,
@@ -15,10 +16,26 @@
                     "render": "normal"
                 }
             }
+        },
+        {
+            "type"     :  "sphere",
+            "radius"   :  2.6,
+            "transform":  {
+                "position": [2.5, -1.2, 8.2],
+                "scale"   : [1, 1, 1]
+            },
+            "material":   {
+                "shader" : "lambertian",
+                "albedo" : [0.2, 0.6, 0.8, 1.0],
+                "debug"  : {
+                    "active": "False",
+                    "render": "normal"
+                }
+            }
         }
     ],
     "camera": {
-        "fov" :           60
+        "fov": 65
     },
     "light": {
         "transform":  {

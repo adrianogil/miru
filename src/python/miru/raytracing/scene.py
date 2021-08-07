@@ -91,7 +91,7 @@ class Scene:
         else:
             target_pixel_width = self.render_width
 
-        if image_file == "":
+        if not image_file:
             image_file = self.target_image_file
 
         ssaa_render_data = RenderData()
@@ -172,23 +172,27 @@ class Scene:
 
         render_data.img.save(image_file)
 
+def render_scene(target_scene_file, target_image_file=None):
+    print('Parsing file %s' % (target_scene_file))
+    objs = {
+        "cube": Cube.parse,
+        "sphere": Sphere.parse,
+        "camera": Camera.parse
+    }
+    target_scene = Scene()
+    parser = SceneParser(objs)
+    parser.parse(target_scene_file, target_scene)
+
+    target_scene.render(image_file=target_image_file)
+
 
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1:
         target_scene_file = sys.argv[1]
-        print('Parsing file %s' % (target_scene_file))
-        objs = {
-            "cube": Cube.parse,
-            "sphere": Sphere.parse,
-            "camera": Camera.parse
-        }
-        target_scene = Scene()
-        parser = SceneParser(objs)
-        parser.parse(target_scene_file, target_scene)
+        target_image_file = None
 
         if len(sys.argv) > 2:
             target_image_file = sys.argv[2]
-            target_scene.render(image_file=target_image_file)
-        else:
-            target_scene.render()
+        render_scene(target_scene_file, target_image_file)
+
