@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Miru GPU Particle Playground</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <canvas id="particle-canvas" aria-label="GPU particle playground"></canvas>
+
+      <aside class="control-panel" aria-label="Particle controls">
+        <header>
+          <p class="eyebrow">Miru / WebGPU</p>
+          <h1>Particle Playground</h1>
+          <div class="status-line">
+            <span id="engine-status">initializing</span>
+            <span id="fps-label">-- fps</span>
+          </div>
+        </header>
+
+        <section>
+          <h2>Simulation</h2>
+          <label>
+            Particles
+            <select id="particle-count">
+              <option value="2048">2k</option>
+              <option value="4096">4k</option>
+              <option value="8192">8k</option>
+              <option value="16384" selected>16k</option>
+              <option value="65536">64k</option>
+              <option value="262144">256k</option>
+              <option value="1048576">1M</option>
+            </select>
+          </label>
+          <label>
+            Gravity
+            <input id="gravity" type="range" min="-8" max="8" step="0.1" value="-1.2" />
+            <output id="gravity-value">-1.2</output>
+          </label>
+          <label>
+            Attraction
+            <input id="attraction" type="range" min="-12" max="24" step="0.1" value="9" />
+            <output id="attraction-value">9.0</output>
+          </label>
+          <label>
+            Damping
+            <input id="damping" type="range" min="0.88" max="1" step="0.001" value="0.986" />
+            <output id="damping-value">0.986</output>
+          </label>
+          <label>
+            Bounce
+            <input id="bounce" type="range" min="0" max="1" step="0.01" value="0.68" />
+            <output id="bounce-value">0.68</output>
+          </label>
+        </section>
+
+        <section>
+          <h2>Rendering</h2>
+          <label>
+            Point size
+            <input id="point-size" type="range" min="0.04" max="0.5" step="0.01" value="0.14" />
+            <output id="point-size-value">0.14</output>
+          </label>
+          <label>
+            Debug mode
+            <select id="debug-mode">
+              <option value="0">Final color</option>
+              <option value="1">Velocity</option>
+              <option value="2">Lifetime</option>
+              <option value="3">Force magnitude</option>
+              <option value="4">Bounds</option>
+            </select>
+          </label>
+          <label>
+            Bounds
+            <select id="bounds-mode">
+              <option value="0">Sphere</option>
+              <option value="1">Box</option>
+            </select>
+          </label>
+        </section>
+
+        <section>
+          <h2>Attractors</h2>
+          <label>
+            Animated attractors
+            <input id="attractor-count" type="range" min="0" max="4" step="1" value="2" />
+            <output id="attractor-count-value">2</output>
+          </label>
+          <label class="toggle">
+            <input id="mouse-attractor" type="checkbox" checked />
+            Mouse/touch attractor
+          </label>
+          <label class="toggle">
+            <input id="pause-sim" type="checkbox" />
+            Pause simulation
+          </label>
+        </section>
+
+        <footer class="button-row">
+          <button id="reset-button" type="button">Reset</button>
+          <button id="randomize-button" type="button">Randomize</button>
+        </footer>
+      </aside>
+    </main>
+  </body>
+</html>

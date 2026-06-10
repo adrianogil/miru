@@ -104,3 +104,4 @@ ENV/
 *.jpg
 .DS_Store
 *.gif
+node_modules/
