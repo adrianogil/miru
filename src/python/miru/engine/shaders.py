@@ -24,7 +24,9 @@ def _base_color(material, interception):
 
 def _scene_lights(scene):
     if hasattr(scene, "get_lights"):
-        return scene.get_lights()
+        lights = scene.get_lights()
+        if lights:
+            return lights
     light = scene.get_light()
     return [] if light is None else [light]
 
