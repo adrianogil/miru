@@ -31,3 +31,13 @@ class SDFTorus(SDFObject):
             )
             - self.minor_radius
         )
+
+    @staticmethod
+    def parse(data):
+        torus = SDFTorus(
+            float(data.get("major_radius", 1.0)),
+            float(data.get("minor_radius", 0.25)),
+        )
+        if "transform" in data:
+            torus.transform.parse(data["transform"])
+        return torus

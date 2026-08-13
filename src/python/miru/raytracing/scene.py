@@ -32,6 +32,7 @@ class Scene:
         self.post_processing_effects = []
         self.background_color = Color(0.0, 0.0, 0.0, 1.0)
         self.light = None
+        self.lights = []
         self.ssaa_level = 1
 
         self.render_height = 50
@@ -53,9 +54,18 @@ class Scene:
 
     def set_light(self, light_obj):
         self.light = light_obj
+        self.lights = [] if light_obj is None else [light_obj]
+
+    def add_light(self, light_obj):
+        self.lights.append(light_obj)
+        if self.light is None:
+            self.light = light_obj
 
     def get_light(self):
         return self.light
+
+    def get_lights(self):
+        return list(self.lights)
 
     def raytracing(self, pixel_pos):
         ray = Ray(self.camera.transform.position, pixel_pos)
@@ -172,6 +182,29 @@ class Scene:
 
         render_data.img.save(image_file)
 
+
+def _scene_manifest_loader():
+    from miru.engine.scene_manifest import SceneManifestLoader
+
+    return SceneManifestLoader(
+        "raytracing",
+        Scene,
+        {
+            "cube": Cube.parse,
+            "sphere": Sphere.parse,
+        },
+    )
+
+
+def load_scene_manifest(path):
+    """Load a validated v1 JSON manifest into a CPU ray-tracing scene."""
+    return _scene_manifest_loader().load(path)
+
+
+def load_scene_manifest_data(data, source="<memory>"):
+    """Load already-decoded manifest data into a CPU ray-tracing scene."""
+    return _scene_manifest_loader().load_data(data, source=source)
+
 def render_scene(target_scene_file, target_image_file=None):
     print('Parsing file %s' % (target_scene_file))
     objs = {
@@ -195,4 +228,3 @@ if __name__ == "__main__":
         if len(sys.argv) > 2:
             target_image_file = sys.argv[2]
         render_scene(target_scene_file, target_image_file)
-

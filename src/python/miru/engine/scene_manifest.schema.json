@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/adrianogil/miru/scene-manifest.schema.json",
+  "title": "Miru scene manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "renderer", "camera", "lights", "objects"],
+  "properties": {
+    "version": {"const": 1},
+    "renderer": {"enum": ["raymarching", "raytracing"]},
+    "camera": {"$ref": "#/$defs/camera"},
+    "lights": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/light"}
+    },
+    "objects": {"type": "array"},
+    "render": {"$ref": "#/$defs/render"},
+    "background_color": {"$ref": "#/$defs/color"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"renderer": {"const": "raymarching"}}},
+      "then": {
+        "properties": {
+          "objects": {
+            "items": {
+              "oneOf": [
+                {"$ref": "#/$defs/sdfSphere"},
+                {"$ref": "#/$defs/sdfCube"},
+                {"$ref": "#/$defs/sdfPlane"},
+                {"$ref": "#/$defs/sdfTorus"}
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "objects": {
+            "items": {
+              "oneOf": [
+                {"$ref": "#/$defs/raySphere"},
+                {"$ref": "#/$defs/rayCube"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "number3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"type": "number"}
+    },
+    "positiveNumber3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"type": "number", "exclusiveMinimum": 0}
+    },
+    "color": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "position": {"$ref": "#/$defs/number3"},
+        "rotation": {"$ref": "#/$defs/number3"},
+        "scale": {"$ref": "#/$defs/number3"}
+      }
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"enum": ["perspective", "orthographic"]},
+        "fov": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 180},
+        "near": {"type": "number", "exclusiveMinimum": 0},
+        "far": {"type": "number", "exclusiveMinimum": 0},
+        "transform": {"$ref": "#/$defs/transform"}
+      }
+    },
+    "light": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {"const": "point"},
+        "color": {"$ref": "#/$defs/color"},
+        "intensity": {"type": "number", "minimum": 0},
+        "transform": {"$ref": "#/$defs/transform"}
+      }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preset"],
+      "properties": {
+        "preset": {"enum": ["matte", "metal", "glass-like", "emissive"]},
+        "albedo": {"$ref": "#/$defs/color"},
+        "roughness": {"type": "number", "minimum": 0, "maximum": 1},
+        "metallic": {"type": "number", "minimum": 0, "maximum": 1},
+        "transmission": {"type": "number", "minimum": 0, "maximum": 1},
+        "ior": {"type": "number", "minimum": 1},
+        "emission": {"$ref": "#/$defs/color"},
+        "emission_strength": {"type": "number", "minimum": 0}
+      }
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "ssaa": {"type": "integer", "minimum": 1},
+        "to_image": {"type": "string", "minLength": 1}
+      }
+    },
+    "objectBase": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"type": "string"},
+        "transform": {"$ref": "#/$defs/transform"},
+        "material": {"$ref": "#/$defs/material"}
+      }
+    },
+    "sdfSphere": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {
+          "type": "object",
+          "required": ["radius"],
+          "properties": {
+            "type": {"const": "sphere"},
+            "radius": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "sdfCube": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {
+          "type": "object",
+          "required": ["size"],
+          "properties": {
+            "type": {"const": "cube"},
+            "size": {"$ref": "#/$defs/positiveNumber3"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "sdfPlane": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {
+          "type": "object",
+          "required": ["normal"],
+          "properties": {
+            "type": {"const": "plane"},
+            "normal": {"$ref": "#/$defs/number3"},
+            "offset": {"type": "number"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "sdfTorus": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {
+          "type": "object",
+          "required": ["major_radius", "minor_radius"],
+          "properties": {
+            "type": {"const": "torus"},
+            "major_radius": {"type": "number", "exclusiveMinimum": 0},
+            "minor_radius": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "raySphere": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {
+          "type": "object",
+          "required": ["radius"],
+          "properties": {
+            "type": {"const": "sphere"},
+            "radius": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "rayCube": {
+      "allOf": [
+        {"$ref": "#/$defs/objectBase"},
+        {"type": "object", "properties": {"type": {"const": "cube"}}}
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

@@ -18,9 +18,19 @@ class Transform:
         self.transform_matrix = None
 
     def update_internals(self):
+        orientation = t_utils.getCompleteOrientationMatrix(self.rotation)
         self.transform_matrix = t_utils.getTranslationMatrix(self.position).dot(
-            t_utils.getCompleteOrientationMatrix(self.rotation)
+            orientation
         ).dot(t_utils.getScalingMatrix(self.scale))
+
+        def oriented_axis(axis):
+            transformed = orientation.dot([axis.x, axis.y, axis.z, 0.0])
+            return Vector3(transformed[0], transformed[1], transformed[2]).normalized()
+
+        self.forward = oriented_axis(Vector3.forward())
+        self.right = oriented_axis(Vector3.right())
+        self.left = self.right.multiply(-1.0)
+        self.up = oriented_axis(Vector3.up())
 
     def get_transform_matrix(self):
         return self.transform_matrix
@@ -47,3 +57,7 @@ class Transform:
         if 'scale' in data:
             s = data['scale']
             self.scale = Vector3(s[0], s[1], s[2])
+
+        if 'rotation' in data:
+            r = data['rotation']
+            self.rotation = Vector3(r[0], r[1], r[2])

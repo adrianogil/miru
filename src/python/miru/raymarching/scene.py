@@ -10,7 +10,7 @@ from miru.engine.sceneparser import SceneParser
 
 from miru.engine.material import Material
 
-from miru.raymarching.sdfobjects import SDFCube, SDFSphere
+from miru.raymarching.sdfobjects import SDFCube, SDFPlane, SDFSphere, SDFTorus
 
 
 try:
@@ -31,6 +31,7 @@ class Scene:
         self.post_processing_effects = []
         self.background_color = Color(0.0,0.0,0.0,1.0)
         self.light = None
+        self.lights = []
         self.ssaa_level = 1
         self.min_marching_distance = 0.06
         self.max_marching_steps = 40
@@ -54,9 +55,18 @@ class Scene:
 
     def set_light(self, light_obj):
         self.light = light_obj
+        self.lights = [] if light_obj is None else [light_obj]
+
+    def add_light(self, light_obj):
+        self.lights.append(light_obj)
+        if self.light is None:
+            self.light = light_obj
 
     def get_light(self):
         return self.light
+
+    def get_lights(self):
+        return list(self.lights)
 
     def raymarching(self, position, view_direction):
         min_distance = 10000
@@ -188,6 +198,31 @@ class Scene:
             return np.ndarray(render_data.pixels)
 
         render_data.img.save(image_file)
+
+
+def _scene_manifest_loader():
+    from miru.engine.scene_manifest import SceneManifestLoader
+
+    return SceneManifestLoader(
+        "raymarching",
+        Scene,
+        {
+            "cube": SDFCube.parse,
+            "plane": SDFPlane.parse,
+            "sphere": SDFSphere.parse,
+            "torus": SDFTorus.parse,
+        },
+    )
+
+
+def load_scene_manifest(path):
+    """Load a validated v1 JSON manifest into a raymarch scene."""
+    return _scene_manifest_loader().load(path)
+
+
+def load_scene_manifest_data(data, source="<memory>"):
+    """Load already-decoded manifest data into a raymarch scene."""
+    return _scene_manifest_loader().load_data(data, source=source)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "renderer": "raymarching",
+  "camera": {
+    "mode": "perspective",
+    "fov": 55,
+    "near": 0.05,
+    "far": 100,
+    "transform": {
+      "position": [0, 0.8, -7],
+      "rotation": [-4, 0, 0]
+    }
+  },
+  "lights": [
+    {
+      "type": "point",
+      "color": [1, 0.9, 0.75],
+      "intensity": 1.1,
+      "transform": {"position": [-4, 6, -4]}
+    },
+    {
+      "type": "point",
+      "color": [0.3, 0.5, 1],
+      "intensity": 0.45,
+      "transform": {"position": [5, 2, -1]}
+    }
+  ],
+  "objects": [
+    {
+      "id": "matte-sphere",
+      "type": "sphere",
+      "radius": 1,
+      "transform": {"position": [-2.7, 0, 3]},
+      "material": {
+        "preset": "matte",
+        "albedo": [0.75, 0.18, 0.12]
+      }
+    },
+    {
+      "id": "metal-cube",
+      "type": "cube",
+      "size": [1.7, 1.7, 1.7],
+      "transform": {"position": [-0.8, 0, 3]},
+      "material": {
+        "preset": "metal",
+        "albedo": [0.85, 0.62, 0.22],
+        "roughness": 0.18
+      }
+    },
+    {
+      "id": "glass-torus",
+      "type": "torus",
+      "major_radius": 0.72,
+      "minor_radius": 0.25,
+      "transform": {"position": [1.2, 0, 3]},
+      "material": {
+        "preset": "glass-like",
+        "albedo": [0.45, 0.8, 0.95],
+        "ior": 1.45
+      }
+    },
+    {
+      "id": "emissive-sphere",
+      "type": "sphere",
+      "radius": 0.75,
+      "transform": {"position": [3, 0, 3]},
+      "material": {
+        "preset": "emissive",
+        "emission": [0.2, 0.75, 1],
+        "emission_strength": 1.4
+      }
+    },
+    {
+      "id": "ground",
+      "type": "plane",
+      "normal": [0, 1, 0],
+      "offset": 0,
+      "transform": {"position": [0, -1.1, 0]},
+      "material": {
+        "preset": "matte",
+        "albedo": [0.16, 0.18, 0.22]
+      }
+    }
+  ],
+  "background_color": [0.025, 0.035, 0.06],
+  "render": {
+    "width": 480,
+    "height": 270,
+    "ssaa": 1,
+    "to_image": "raymarch_material_presets.png"
+  }
+}

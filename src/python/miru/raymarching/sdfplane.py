@@ -19,3 +19,14 @@ class SDFPlane(SDFObject):
     def distance(self, position):
         local_position = position.minus(self.transform.position)
         return local_position.dot_product(self.normal) - self.offset
+
+    @staticmethod
+    def parse(data):
+        normal_data = data.get("normal", [0.0, 1.0, 0.0])
+        plane = SDFPlane(
+            Vector3(normal_data[0], normal_data[1], normal_data[2]),
+            offset=float(data.get("offset", 0.0)),
+        )
+        if "transform" in data:
+            plane.transform.parse(data["transform"])
+        return plane
