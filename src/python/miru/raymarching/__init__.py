@@ -6,6 +6,7 @@ from miru.raymarching.sdfdomains import (
     SDFTwist,
 )
 from miru.raymarching.sdfmodifiers import SDFRound, SDFShell
+from miru.raymarching.materials import MATERIAL_PRESETS, material_from_preset
 from miru.raymarching.sdfoperations import (
     SDFIntersection,
     SDFSmoothIntersection,
@@ -36,4 +37,6 @@ __all__ = [
     "SDFTorus",
     "SDFTwist",
     "SDFUnion",
+    "MATERIAL_PRESETS",
+    "material_from_preset",
 ]

@@ -61,3 +61,8 @@ class SDFObject:
             interception["hit_point"],
         )
         return self.material.render(scene, interception)
+
+    def set_material_preset(self, preset, **overrides):
+        """Apply a named raymarch material preset and return this object."""
+        self.material = Material.from_preset(preset, **overrides)
+        return self

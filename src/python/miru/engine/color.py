@@ -67,7 +67,15 @@ class Color:
 
     @staticmethod
     def from_array(a):
-        return Color(a[0], a[1], a[2], a[3])
+        if len(a) == 3:
+            return Color(a[0], a[1], a[2], 1.0)
+        if len(a) == 4:
+            return Color(a[0], a[1], a[2], a[3])
+        raise ValueError("Colors must contain three or four components")
+
+    @staticmethod
+    def black():
+        return Color(0.0, 0.0, 0.0, 1.0)
 
     @staticmethod
     def random():
