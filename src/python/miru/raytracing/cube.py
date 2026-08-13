@@ -5,6 +5,7 @@ from miru.engine.vector import Vector3, Vector2
 from miru.engine.color import Color
 
 from miru.raytracing.plane import Plane
+from miru.raytracing.bvh import AABB
 
 
 class Cube:
@@ -58,9 +59,9 @@ class Cube:
         return self.albedo
 
     def intercepts(self, ray):
-        min_depth_distance = 1000
+        min_depth_distance = float("inf")
 
-        intersection = {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} 
+        intersection = {'result': False, 'hit_point': Vector3.zero(), 'normal' : None, 'uv' : Vector2.zero()}
 
         for p in self.planes:
             intersection_result = p.intercepts(ray)
@@ -71,9 +72,17 @@ class Cube:
                     self.albedo = p.albedo
                     intersection['result'] = True
                     intersection['hit_point'] = intersection_result['hit_point']
+                    intersection['normal'] = intersection_result['normal']
+                    intersection['uv'] = intersection_result['uv']
                     intersection['plane'] = p
 
         return intersection
+
+    def bounding_box(self):
+        if not all(hasattr(plane, "points") for plane in self.planes):
+            self.pre_render()
+        points = [point for plane in self.planes for point in plane.points]
+        return AABB.from_points(points)
 
     @staticmethod
     def parse(data):

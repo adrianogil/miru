@@ -2,6 +2,7 @@ from miru.engine.transform import Transform
 from miru.engine.vector import Vector3, Vector2
 
 from miru.engine.material import Material
+from miru.raytracing.bvh import AABB
 
 import numpy as np
 
@@ -48,10 +49,8 @@ class Plane:
         denom = self.n.dot_product(ray.direction)
         # print(str(denom))
         if np.abs(denom) > 1e-6:
-            if denom < 0:
-                self.n.multiply(-1, False)
             p0l0 = self.p0.minus(ray.origin)
-            t = p0l0.dot_product(self.n)
+            t = p0l0.dot_product(self.n) / denom
 
             if t >= 0:
                 intersection_point = ray.origin.add(ray.direction.multiply(t))
@@ -64,14 +63,25 @@ class Plane:
                 for i in range(1, len(points)):
                     p = points[i]
                     if intersection_point.equals(p):
-                        return (True, intersection_point)
+                        return {
+                            'result': True,
+                            'hit_point': intersection_point,
+                            'normal': self.n,
+                            'uv': Vector2.zero(),
+                        }
                     a = points[i].minus(intersection_point).normalized()
                     b = points[(i+1)%len(points)].minus(intersection_point).normalized()
                     Nt = a.cross_product(b).normalized()
                     if N.dot_product(Nt) < 0:
-                        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
+                        return {'result': False, 'hit_point': Vector3.zero(), 'normal' : None, 'uv' : Vector2.zero()}
                     # print('Passed on ' + str(i))
 
-                return {'result': True, 'hit_point': intersection_point, 'normal' : None, 'uv' : Vector2.zero}
+                normal = self.n if denom < 0 else self.n.multiply(-1.0)
+                return {'result': True, 'hit_point': intersection_point, 'normal' : normal, 'uv' : Vector2.zero()}
 
-        return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
+        return {'result': False, 'hit_point': Vector3.zero(), 'normal' : None, 'uv' : Vector2.zero()}
+
+    def bounding_box(self):
+        if not hasattr(self, "points"):
+            self.pre_render()
+        return AABB.from_points(self.points)

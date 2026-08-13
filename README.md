@@ -121,6 +121,29 @@ The loader is dependency-free and JSON-only. YAML files produce an explicit
 unsupported-format error rather than relying on an optional undeclared parser.
 The older unversioned `.scene` files remain available through `SceneParser`.
 
+## CPU ray-tracing BVH
+
+The Python CPU ray tracer builds a deterministic median-split bounding-volume
+hierarchy before each render. Sphere, finite-plane, and cube bounds are
+accelerated; custom objects without a `bounding_box()` method remain correct
+through a brute-force fallback list. Traversal visits nearer nodes first and
+preserves scene insertion order for equal-distance hits.
+
+`Scene.use_bvh` defaults to `True`. The reference path is available for
+debugging or correctness comparisons:
+
+```python
+from miru.raytracing.ray import Ray
+
+scene.prepare()
+accelerated_hit = scene.closest_hit(ray, accelerated=True)
+reference_hit = scene.closest_hit(ray, accelerated=False)
+```
+
+Call `scene.prepare()` after changing object transforms outside `render()`;
+`render()` always prepares objects and rebuilds the BVH automatically. Adding
+an object invalidates the current BVH and triggers a rebuild on the next query.
+
 
 ## Contributing
 

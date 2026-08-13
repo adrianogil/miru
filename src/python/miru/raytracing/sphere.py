@@ -6,6 +6,8 @@ from miru.engine.material import Material
 
 import numpy as np
 
+from miru.raytracing.bvh import AABB
+
 class Sphere:
     def __init__(self, radius):
         self.radius = radius
@@ -44,7 +46,7 @@ class Sphere:
 
         d2 = L.dot_product(L) - tca * tca
         if d2 > radius2:
-            return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero}
+            return {'result': False, 'hit_point': Vector3.zero(), 'normal' : None, 'uv' : Vector2.zero()}
         thc = np.sqrt(radius2 - d2)
         t0 = tca - thc
         t1 = tca + thc
@@ -57,7 +59,7 @@ class Sphere:
         if t0 < 0:
             t0 = t1 # if t0 is negative, let's use t1 instead
             if t0 < 0:
-                return {'result': False, 'hit_point': Vector3.zero, 'normal' : None, 'uv' : Vector2.zero} # both t0 and t1 are negative
+                return {'result': False, 'hit_point': Vector3.zero(), 'normal' : None, 'uv' : Vector2.zero()} # both t0 and t1 are negative
         t = t0;
 
         hit_point = ray.origin.add(ray.direction.multiply(t))
@@ -76,6 +78,13 @@ class Sphere:
         # uv.x = 1f - uv.x;
 
         return {'result': True, 'hit_point': hit_point, 'normal' : normal, 'uv' : uv}
+
+    def bounding_box(self):
+        extent = Vector3(self.radius, self.radius, self.radius)
+        return AABB(
+            self.transform.position.minus(extent),
+            self.transform.position.add(extent),
+        )
 
     @staticmethod
     def parse(data):

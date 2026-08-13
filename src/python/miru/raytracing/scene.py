@@ -1,5 +1,6 @@
 from PIL import Image
 from .ray import Ray
+from .bvh import BVH, brute_force_closest_hit
 
 import numpy as np
 
@@ -39,9 +40,13 @@ class Scene:
         self.render_width = 50
 
         self.target_image_file = "test.jpg"
+        self.use_bvh = True
+        self.bvh_leaf_size = 4
+        self._bvh = None
 
     def add_objects(self, obj):
         self.objects.append(obj)
+        self._bvh = None
 
     def add_post_processing(self, effect):
         self.post_processing_effects.append(effect)
@@ -67,25 +72,37 @@ class Scene:
     def get_lights(self):
         return list(self.lights)
 
-    def raytracing(self, pixel_pos):
+    def prepare(self):
+        """Prepare object transforms and rebuild the scene acceleration data."""
+        if hasattr(self, "camera"):
+            self.camera.transform.update_internals()
+        for obj in self.objects:
+            obj.pre_render()
+        self._bvh = BVH(self.objects, leaf_size=self.bvh_leaf_size)
+
+    def closest_hit(self, ray, accelerated=None):
+        if accelerated is None:
+            accelerated = self.use_bvh
+        if self._bvh is None:
+            self.prepare()
+        if accelerated:
+            return self._bvh.closest_hit(ray, max_distance=self.camera.far)
+        return brute_force_closest_hit(
+            ray,
+            self.objects,
+            max_distance=self.camera.far,
+        )
+
+    def raytracing(self, pixel_pos, accelerated=None):
         ray = Ray(self.camera.transform.position, pixel_pos)
 
         pixel_color = self.background_color
 
-        min_depth_distance = self.camera.far
-
-        camera_pos = self.camera.transform.position
-
-        for o in self.objects:
-            intersection = o.intercepts(ray)
-
-            if intersection['result']:
-                hit_point = intersection['hit_point']
-                distance_vector = hit_point.minus(camera_pos)
-                depth_distance = distance_vector.magnitude()
-                if depth_distance < min_depth_distance:
-                    pixel_color = o.render(self, intersection)
-                    min_depth_distance = depth_distance
+        closest = self.closest_hit(ray, accelerated=accelerated)
+        if closest is not None:
+            obj, intersection, _, _ = closest
+            intersection.setdefault("view_direction", ray.direction)
+            pixel_color = obj.render(self, intersection)
 
         return pixel_color
 
@@ -119,8 +136,7 @@ class Scene:
         ssaa_render_data.img = Image.new( 'RGB', (pixel_width, pixel_height), "black") # create a new black image
         ssaa_render_data.pixels = ssaa_render_data.img.load() # create the pixel map
 
-        for o in self.objects:
-            o.pre_render()
+        self.prepare()
 
         for x in range(0, pixel_width):
             for y in range(0, pixel_height):
