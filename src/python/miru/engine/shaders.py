@@ -27,7 +27,7 @@ def _scene_lights(scene):
         lights = scene.get_lights()
         if lights:
             return lights
-    light = scene.get_light()
+    light = scene.get_light() if hasattr(scene, "get_light") else None
     return [] if light is None else [light]
 
 
